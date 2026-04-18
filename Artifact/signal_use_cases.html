@@ -1,0 +1,161 @@
+
+<style>
+.sector { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 12px; }
+.sector-label { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-tertiary); margin: 0 0 10px; }
+.cases { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 8px; }
+.case { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; }
+.case-who { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 3px; }
+.case-ping { font-size: 12px; color: var(--color-text-secondary); margin: 0 0 6px; }
+.case-meaning { font-size: 11px; color: var(--color-text-tertiary); border-top: 0.5px solid var(--color-border-tertiary); padding-top: 6px; margin: 0; }
+.pill { display: inline-block; font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 99px; margin-bottom: 6px; }
+.pill-green { background: var(--color-background-success); color: var(--color-text-success); }
+.pill-blue  { background: var(--color-background-info);    color: var(--color-text-info); }
+.pill-amber { background: var(--color-background-warning);  color: var(--color-text-warning); }
+.pill-coral { background: var(--color-background-danger);   color: var(--color-text-danger); }
+</style>
+
+<h2 class="sr-only">Signal ping use cases across sectors — who sends, what the ping means, no words needed</h2>
+
+<div class="sector">
+  <p class="sector-label">workplace & office</p>
+  <div class="cases">
+    <div class="case">
+      <span class="pill pill-blue">executive</span>
+      <p class="case-who">CEO → PA</p>
+      <p class="case-ping">one ping</p>
+      <p class="case-meaning">"Come to my office now"</p>
+    </div>
+    <div class="case">
+      <span class="pill pill-blue">meetings</span>
+      <p class="case-who">Manager → team</p>
+      <p class="case-ping">one ping</p>
+      <p class="case-meaning">"Standup in 5 minutes"</p>
+    </div>
+    <div class="case">
+      <span class="pill pill-blue">ops</span>
+      <p class="case-who">IT → staff</p>
+      <p class="case-ping">one ping</p>
+      <p class="case-meaning">"Planned downtime starting"</p>
+    </div>
+  </div>
+</div>
+
+<div class="sector">
+  <p class="sector-label">healthcare</p>
+  <div class="cases">
+    <div class="case">
+      <span class="pill pill-green">theatre</span>
+      <p class="case-who">Surgeon → scrub nurse</p>
+      <p class="case-ping">one ping</p>
+      <p class="case-meaning">"Prep the next instrument tray"</p>
+    </div>
+    <div class="case">
+      <span class="pill pill-green">ward</span>
+      <p class="case-who">Doctor → pharmacist</p>
+      <p class="case-ping">one ping</p>
+      <p class="case-meaning">"Prescription ready to review"</p>
+    </div>
+    <div class="case">
+      <span class="pill pill-green">clinic</span>
+      <p class="case-who">Receptionist → doctor</p>
+      <p class="case-ping">one ping</p>
+      <p class="case-meaning">"Next patient is in the room"</p>
+    </div>
+  </div>
+</div>
+
+<div class="sector">
+  <p class="sector-label">construction & field</p>
+  <div class="cases">
+    <div class="case">
+      <span class="pill pill-amber">site</span>
+      <p class="case-who">Foreman → crew</p>
+      <p class="case-ping">one ping</p>
+      <p class="case-meaning">"Assemble at the gate"</p>
+    </div>
+    <div class="case">
+      <span class="pill pill-amber">delivery</span>
+      <p class="case-who">Driver → warehouse</p>
+      <p class="case-ping">one ping</p>
+      <p class="case-meaning">"At the dock, open the bay"</p>
+    </div>
+    <div class="case">
+      <span class="pill pill-amber">field</span>
+      <p class="case-who">Supervisor → technician</p>
+      <p class="case-ping">one ping</p>
+      <p class="case-meaning">"Job approved, proceed"</p>
+    </div>
+  </div>
+</div>
+
+<div class="sector">
+  <p class="sector-label">personal services</p>
+  <div class="cases">
+    <div class="case">
+      <span class="pill pill-coral">beauty</span>
+      <p class="case-who">Client → hairdresser</p>
+      <p class="case-ping">one ping</p>
+      <p class="case-meaning">"I'm ready, come fix my hair"</p>
+    </div>
+    <div class="case">
+      <span class="pill pill-coral">home</span>
+      <p class="case-who">Homeowner → plumber</p>
+      <p class="case-ping">one ping</p>
+      <p class="case-meaning">"The issue is back, come check"</p>
+    </div>
+    <div class="case">
+      <span class="pill pill-coral">transport</span>
+      <p class="case-who">Passenger → driver</p>
+      <p class="case-ping">one ping</p>
+      <p class="case-meaning">"I'm outside, ready to go"</p>
+    </div>
+  </div>
+</div>
+
+<div class="sector">
+  <p class="sector-label">education</p>
+  <div class="cases">
+    <div class="case">
+      <span class="pill pill-blue">school</span>
+      <p class="case-who">Teacher → lab tech</p>
+      <p class="case-ping">one ping</p>
+      <p class="case-meaning">"Bring the equipment now"</p>
+    </div>
+    <div class="case">
+      <span class="pill pill-blue">admin</span>
+      <p class="case-who">Principal → teacher</p>
+      <p class="case-ping">one ping</p>
+      <p class="case-meaning">"Report to the office"</p>
+    </div>
+    <div class="case">
+      <span class="pill pill-blue">exam</span>
+      <p class="case-who">Invigilator → assistant</p>
+      <p class="case-ping">one ping</p>
+      <p class="case-meaning">"Extra paper needed, room 3"</p>
+    </div>
+  </div>
+</div>
+
+<div class="sector">
+  <p class="sector-label">security & events</p>
+  <div class="cases">
+    <div class="case">
+      <span class="pill pill-amber">security</span>
+      <p class="case-who">Control room → guard</p>
+      <p class="case-ping">one ping</p>
+      <p class="case-meaning">"Check gate B now"</p>
+    </div>
+    <div class="case">
+      <span class="pill pill-amber">events</span>
+      <p class="case-who">Stage manager → crew</p>
+      <p class="case-ping">one ping</p>
+      <p class="case-meaning">"Two minutes to curtain"</p>
+    </div>
+    <div class="case">
+      <span class="pill pill-amber">protocol</span>
+      <p class="case-who">VIP handler → driver</p>
+      <p class="case-ping">one ping</p>
+      <p class="case-meaning">"Bring the car around"</p>
+    </div>
+  </div>
+</div>

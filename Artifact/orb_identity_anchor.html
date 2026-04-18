@@ -1,0 +1,284 @@
+
+<style>
+* { box-sizing: border-box; }
+@keyframes breathe-gray   { 0%,100%{opacity:.25} 50%{opacity:.55} }
+@keyframes breathe-amber  { 0%,100%{opacity:.5}  50%{opacity:.9}  }
+@keyframes pulse-red      { 0%,100%{opacity:.55;transform:scale(1)}  50%{opacity:.95;transform:scale(1.1)} }
+@keyframes pulse-crimson  { 0%,100%{opacity:.7;transform:scale(1)}   30%{opacity:1;transform:scale(1.14)} }
+@keyframes flash-green    { 0%{opacity:.2} 30%{opacity:1} 70%{opacity:.9} 100%{opacity:.3} }
+@keyframes ring-pulse     { 0%,100%{transform:scale(1);opacity:.6} 50%{transform:scale(1.18);opacity:1} }
+@keyframes ring-crimson   { 0%,100%{transform:scale(1);opacity:.8} 25%{transform:scale(1.22);opacity:1} }
+
+.orb-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+}
+.orb-glow {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  filter: blur(18px);
+}
+.orb-glass {
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  border: 0.5px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(4px);
+  z-index: 1;
+}
+.orb-ring {
+  position: absolute;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  z-index: 2;
+}
+.orb-dp {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  z-index: 3;
+  border: 1px solid rgba(255,255,255,0.12);
+  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+  transition: opacity 0.6s, filter 0.6s;
+}
+
+.g-idle    { background: #444; animation: none; opacity: .3; }
+.g-queued  { background: #888780; animation: breathe-gray 3s ease-in-out infinite; }
+.g-waiting { background: #BA7517; animation: breathe-amber 2.2s ease-in-out infinite; }
+.g-urgent  { background: #E24B4A; animation: pulse-red 1.1s ease-in-out infinite; }
+.g-critical{ background: #791F1F; animation: pulse-crimson .65s ease-in-out infinite; }
+.g-got     { background: #1D9E75; animation: flash-green 2.4s ease-in-out infinite; }
+
+.dp-idle     { opacity: .28; filter: grayscale(100%); }
+.dp-queued   { opacity: .35; filter: grayscale(80%); }
+.dp-waiting  { opacity: .85; filter: grayscale(0%); }
+.dp-urgent   { opacity: .9;  filter: grayscale(0%); }
+.dp-critical { opacity: .95; filter: grayscale(0%); }
+.dp-got      { opacity: 1;   filter: grayscale(0%); }
+
+.ring-waiting  { border-color: rgba(186,117,23,.4); animation: ring-pulse 2.2s ease-in-out infinite; }
+.ring-urgent   { border-color: rgba(226,75,74,.7);  animation: ring-pulse 1.1s ease-in-out infinite; }
+.ring-critical { border-color: rgba(121,31,31,.9);  animation: ring-crimson .65s ease-in-out infinite; }
+.ring-got      { border-color: rgba(29,158,117,.8); animation: ring-pulse 1.5s ease-in-out infinite; }
+.ring-none     { border-color: transparent; }
+
+.av-purple { background: #3C3489; color: #CECBF6; }
+.av-teal   { background: #085041; color: #9FE1CB; }
+.av-coral  { background: #712B13; color: #F5C4B3; }
+.av-blue   { background: #0C447C; color: #B5D4F4; }
+
+.wrap { padding: 4px 0; }
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 10px; }
+.card-label { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-tertiary); margin: 0 0 14px; }
+.rule { font-size: 12px; color: var(--color-text-secondary); border-left: 2px solid var(--color-border-secondary); padding-left: 10px; margin: 14px 0 0; line-height: 1.6; }
+.divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 4px 0 12px; }
+
+.states-grid { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-bottom: 6px; }
+.state-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.state-label { font-size: 10px; color: var(--color-text-tertiary); text-align: center; max-width: 72px; line-height: 1.4; }
+.state-name  { font-size: 11px; font-weight: 500; color: var(--color-text-secondary); text-align: center; }
+
+.layer-table { width: 100%; border-collapse: collapse; }
+.layer-table td { padding: 7px 8px; font-size: 12px; border-bottom: 0.5px solid var(--color-border-tertiary); vertical-align: top; }
+.layer-table tr:last-child td { border-bottom: none; }
+.layer-num { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); width: 20px; }
+.layer-name { font-weight: 500; color: var(--color-text-primary); width: 90px; }
+.layer-desc { color: var(--color-text-secondary); }
+
+.philosophy-block { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 12px 14px; margin-bottom: 8px; }
+.ph-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 4px; }
+.ph-sub   { font-size: 12px; color: var(--color-text-secondary); margin: 0; line-height: 1.6; }
+
+.thinking-ping { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 14px; margin-top: 4px; }
+.tp-label { font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-tertiary); margin: 0 0 10px; }
+.tp-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.tp-row:last-child { border-bottom: none; }
+.tp-info { flex: 1; }
+.tp-name { font-size: 12px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 2px; }
+.tp-msg  { font-size: 11px; color: var(--color-text-secondary); margin: 0; }
+.tp-badge { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 99px; flex-shrink: 0; }
+.tb-warm { background: #FAEEDA; color: #633806; }
+.tb-safe { background: #E1F5EE; color: #085041; }
+.tb-soft { background: #EEEDFE; color: #3C3489; }
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Orb identity anchor — submerged display picture with state-aware presence across all session states</h2>
+
+<div class="card">
+  <p class="card-label">identity anchor — all states</p>
+  <div class="states-grid">
+
+    <div class="state-item">
+      <div class="orb-container">
+        <div class="orb-glow g-idle"></div>
+        <div class="orb-glass"></div>
+        <div class="orb-ring ring-none"></div>
+        <div class="orb-dp dp-idle av-purple">AK</div>
+      </div>
+      <p class="state-name">Idle</p>
+      <p class="state-label">grayscale · 28% opacity · sleeping</p>
+    </div>
+
+    <div class="state-item">
+      <div class="orb-container">
+        <div class="orb-glow g-queued"></div>
+        <div class="orb-glass"></div>
+        <div class="orb-ring ring-none"></div>
+        <div class="orb-dp dp-queued av-purple">AK</div>
+      </div>
+      <p class="state-name">Queued</p>
+      <p class="state-label">gray breath · face waking slightly</p>
+    </div>
+
+    <div class="state-item">
+      <div class="orb-container">
+        <div class="orb-glow g-waiting"></div>
+        <div class="orb-glass"></div>
+        <div class="orb-ring ring-waiting"></div>
+        <div class="orb-dp dp-waiting av-purple">AK</div>
+      </div>
+      <p class="state-name">Waiting</p>
+      <p class="state-label">amber glow · full color · soft ring</p>
+    </div>
+
+    <div class="state-item">
+      <div class="orb-container">
+        <div class="orb-glow g-urgent"></div>
+        <div class="orb-glass"></div>
+        <div class="orb-ring ring-urgent"></div>
+        <div class="orb-dp dp-urgent av-purple">AK</div>
+      </div>
+      <p class="state-name">Ping 3</p>
+      <p class="state-label">red pulse · face vivid · ring tightens</p>
+    </div>
+
+    <div class="state-item">
+      <div class="orb-container">
+        <div class="orb-glow g-critical"></div>
+        <div class="orb-glass"></div>
+        <div class="orb-ring ring-critical"></div>
+        <div class="orb-dp dp-critical av-purple">AK</div>
+      </div>
+      <p class="state-name">Critical</p>
+      <p class="state-label">crimson strobe · identity urgency ring</p>
+    </div>
+
+    <div class="state-item">
+      <div class="orb-container">
+        <div class="orb-glow g-got"></div>
+        <div class="orb-glass"></div>
+        <div class="orb-ring ring-got"></div>
+        <div class="orb-dp dp-got av-purple">AK</div>
+      </div>
+      <p class="state-name">Got it</p>
+      <p class="state-label">green flash · face at full presence</p>
+    </div>
+
+  </div>
+  <p class="rule">The face never moves. Only its presence shifts — from sleeping to vivid. The brain registers identity in the same peripheral glance that registers urgency. Two pieces of information, zero cognitive effort, under one second.</p>
+</div>
+
+<div class="card">
+  <p class="card-label">layer architecture — separation of concern</p>
+  <table class="layer-table">
+    <tr>
+      <td class="layer-num">1</td>
+      <td class="layer-name">Dynamic glow</td>
+      <td class="layer-desc">Pulses and changes color based on session state. Completely separate from identity. Knows nothing about the person — only the ping count and state machine.</td>
+    </tr>
+    <tr>
+      <td class="layer-num">2</td>
+      <td class="layer-name">Frosted glass</td>
+      <td class="layer-desc">Backdrop blur that softens the glow into an ambient halo. Creates the "submerged" quality — the face feels inside the light, not on top of it.</td>
+    </tr>
+    <tr>
+      <td class="layer-num">3</td>
+      <td class="layer-name">Identity ring</td>
+      <td class="layer-desc">Thin border around the DP that inherits the current state color. Bridges the glow layer and the identity layer without merging their logic.</td>
+    </tr>
+    <tr>
+      <td class="layer-num">4</td>
+      <td class="layer-name">Quiet DP</td>
+      <td class="layer-desc">Static. Never animates. Only opacity and saturation shift with state. The anchor that holds still while everything around it breathes.</td>
+    </tr>
+  </table>
+</div>
+
+<hr class="divider">
+
+<div class="card">
+  <p class="card-label">the soul of the product — what Nod actually is</p>
+
+  <div class="philosophy-block">
+    <p class="ph-title">Zero social debt</p>
+    <p class="ph-sub">A ping is a transaction that closes itself. Got it — debt paid. Decline — debt respectfully refused. No lingering obligation. No unread guilt. The session ends and everyone moves on.</p>
+  </div>
+
+  <div class="philosophy-block">
+    <p class="ph-title">Presence without intrusion</p>
+    <p class="ph-sub">You know the other person is there and active. But you haven't invited their voice into your headspace. The handshake is intimate without being invasive. That's a boundary most communication tools can't draw.</p>
+  </div>
+
+  <div class="philosophy-block">
+    <p class="ph-title">The silent call</p>
+    <p class="ph-sub">Two people are briefly "on the line" — connected through vibration and light rather than sound and speech. The duration of a session is a shared moment in time. It starts, it resolves, it closes. Like a nod across a crowded room.</p>
+  </div>
+
+  <div class="thinking-ping" style="margin-top:12px">
+    <p class="tp-label">personal use cases — beyond work</p>
+    <div class="tp-row">
+      <div class="orb-container" style="width:48px;height:48px">
+        <div class="orb-glow g-got" style="width:48px;height:48px"></div>
+        <div class="orb-glass" style="width:38px;height:38px"></div>
+        <div class="orb-dp dp-got av-teal" style="width:22px;height:22px;font-size:8px">MU</div>
+      </div>
+      <div class="tp-info">
+        <p class="tp-name">Parent → child</p>
+        <p class="tp-msg">"Home safe" — no text needed, green flash and it's done</p>
+      </div>
+      <span class="tp-badge tb-safe">safe check</span>
+    </div>
+    <div class="tp-row">
+      <div class="orb-container" style="width:48px;height:48px">
+        <div class="orb-glow g-waiting" style="width:48px;height:48px"></div>
+        <div class="orb-glass" style="width:38px;height:38px"></div>
+        <div class="orb-dp dp-waiting av-coral" style="width:22px;height:22px;font-size:8px">SP</div>
+      </div>
+      <div class="tp-info">
+        <p class="tp-name">Partner → partner</p>
+        <p class="tp-msg">"Thinking of you" — low urgency, no reply expected, just warmth</p>
+      </div>
+      <span class="tp-badge tb-warm">warmth ping</span>
+    </div>
+    <div class="tp-row">
+      <div class="orb-container" style="width:48px;height:48px">
+        <div class="orb-glow g-queued" style="width:48px;height:48px"></div>
+        <div class="orb-glass" style="width:38px;height:38px"></div>
+        <div class="orb-dp dp-queued av-blue" style="width:22px;height:22px;font-size:8px">FR</div>
+      </div>
+      <div class="tp-info">
+        <p class="tp-name">Friend → friend</p>
+        <p class="tp-msg">"I'm outside" — no call, no text, just the agreed signal</p>
+      </div>
+      <span class="tp-badge tb-soft">arrival ping</span>
+    </div>
+  </div>
+</div>
+</div>

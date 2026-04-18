@@ -1,0 +1,173 @@
+
+<style>
+.wrap { padding: 4px 0; }
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 10px; }
+.card-label { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-tertiary); margin: 0 0 12px; }
+.rule { font-size: 12px; color: var(--color-text-secondary); border-left: 2px solid var(--color-border-secondary); padding-left: 10px; margin: 12px 0 0; }
+
+.history-list { display: flex; flex-direction: column; gap: 1px; }
+.history-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.history-item:last-child { border-bottom: none; }
+.h-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.d-normal  { background: #888780; }
+.d-amber   { background: #BA7517; }
+.d-red     { background: #E24B4A; }
+.d-crimson { background: #791F1F; }
+.d-green   { background: #1D9E75; }
+.h-info { flex: 1; }
+.h-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 2px; }
+.h-msg  { font-size: 12px; color: var(--color-text-secondary); margin: 0; }
+.h-right { text-align: right; flex-shrink: 0; }
+.h-time { font-size: 11px; color: var(--color-text-tertiary); margin: 0 0 3px; }
+.h-status { font-size: 11px; font-weight: 500; margin: 0; }
+.s-got     { color: #1D9E75; }
+.s-dec     { color: #E24B4A; }
+.s-exp     { color: #888780; }
+.s-crit    { color: #791F1F; font-weight: 500; }
+.s-new     { color: #1D9E75; }
+
+.session-block { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; margin-bottom: 6px; }
+.session-block-title { font-size: 12px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 3px; }
+.session-block-sub   { font-size: 11px; color: var(--color-text-tertiary); margin: 0; }
+
+.device { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 12px; max-width: 280px; margin: 0 auto; }
+.device-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.device-title { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); }
+.notif { background: var(--color-background-primary); border-radius: var(--border-radius-md); padding: 10px 12px; margin-bottom: 6px; border: 0.5px solid var(--color-border-tertiary); display: flex; align-items: center; gap: 10px; }
+.notif-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.notif-text { flex: 1; }
+.notif-name { font-size: 12px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 1px; }
+.notif-sub  { font-size: 11px; color: var(--color-text-secondary); margin: 0; }
+.notif-new  { border-color: #1D9E75; }
+.notif-crit { border-color: #791F1F; }
+.session-tag { font-size: 10px; font-weight: 500; padding: 1px 7px; border-radius: 99px; }
+.tag-closed { background: #FCEBEB; color: #791F1F; }
+.tag-new    { background: #E1F5EE; color: #085041; }
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Ping session model and dialled history view showing escalation states and session resets</h2>
+
+<div class="card">
+  <p class="card-label">session logic</p>
+
+  <div class="session-block">
+    <p class="session-block-title">Session opens</p>
+    <p class="session-block-sub">Sender sends first ping. Fresh state, neutral color. Session ID assigned silently in background.</p>
+  </div>
+
+  <div class="session-block">
+    <p class="session-block-title">Session escalates</p>
+    <p class="session-block-sub">Each unanswered re-ping deepens the color. Ping count tracked within session only — invisible to receiver until ping 4.</p>
+  </div>
+
+  <div class="session-block">
+    <p class="session-block-title">Session closes at ping 4</p>
+    <p class="session-block-sub">Critical red reached. Session is sealed and written to history. Sender is locked. No more pings within this session — ever.</p>
+  </div>
+
+  <div class="session-block">
+    <p class="session-block-title">New session = clean slate</p>
+    <p class="session-block-sub">Next ping from sender opens a brand new session. Normal color. No carry-over of previous escalation. The past is history, not baggage.</p>
+  </div>
+
+  <p class="rule">A session can also close cleanly — got it, declined, or expired. Those write to history too, in their respective colors. Only the critical session carries red in the log.</p>
+</div>
+
+<div class="card">
+  <p class="card-label">dialled history — color tells the story</p>
+  <div class="history-list">
+
+    <div class="history-item">
+      <div class="h-dot d-green"></div>
+      <div class="h-info">
+        <p class="h-name">Amaka</p>
+        <p class="h-msg">Come fix my hair</p>
+      </div>
+      <div class="h-right">
+        <p class="h-time">9:14 am</p>
+        <p class="h-status s-got">got it</p>
+      </div>
+    </div>
+
+    <div class="history-item">
+      <div class="h-dot d-normal"></div>
+      <div class="h-info">
+        <p class="h-name">Chukwu</p>
+        <p class="h-msg">Assemble at the gate</p>
+      </div>
+      <div class="h-right">
+        <p class="h-time">8:50 am</p>
+        <p class="h-status s-exp">expired</p>
+      </div>
+    </div>
+
+    <div class="history-item">
+      <div class="h-dot d-red"></div>
+      <div class="h-info">
+        <p class="h-name">Bello</p>
+        <p class="h-msg">Report to office</p>
+      </div>
+      <div class="h-right">
+        <p class="h-time">Yesterday</p>
+        <p class="h-status s-dec">declined</p>
+      </div>
+    </div>
+
+    <div class="history-item">
+      <div class="h-dot d-crimson"></div>
+      <div class="h-info">
+        <p class="h-name">Tunde</p>
+        <p class="h-msg">Prescription ready</p>
+      </div>
+      <div class="h-right">
+        <p class="h-time">Yesterday</p>
+        <p class="h-status s-crit">no reply — closed</p>
+      </div>
+    </div>
+
+    <div class="history-item">
+      <div class="h-dot d-green"></div>
+      <div class="h-info">
+        <p class="h-name">Tunde</p>
+        <p class="h-msg">Prescription ready</p>
+      </div>
+      <div class="h-right">
+        <p class="h-time">Today 7:02 am</p>
+        <p class="h-status s-new">got it — new session</p>
+      </div>
+    </div>
+
+  </div>
+  <p class="rule">Tunde's crimson entry yesterday sits in history untouched. Today's green entry is a fresh session above it. The record is honest — no overwriting, no erasure.</p>
+</div>
+
+<div class="card">
+  <p class="card-label">receiver's notification view — color only, no count</p>
+  <div class="device">
+    <div class="device-bar">
+      <span class="device-title">notifications</span>
+    </div>
+
+    <div class="notif notif-new">
+      <div class="notif-dot" style="background:#1D9E75"></div>
+      <div class="notif-text">
+        <p class="notif-name">Emeka</p>
+        <p class="notif-sub">Come fix my hair</p>
+      </div>
+      <span class="session-tag tag-new">new</span>
+    </div>
+
+    <div class="notif notif-crit">
+      <div class="notif-dot" style="background:#791F1F"></div>
+      <div class="notif-text">
+        <p class="notif-name">Dr. Obi</p>
+        <p class="notif-sub">Patient ready for vitals</p>
+      </div>
+      <span class="session-tag tag-closed">critical</span>
+    </div>
+
+  </div>
+  <p class="rule">Receiver never sees a ping count. They see the color of the moment — calm green or critical red. The color alone carries the weight. No number needed.</p>
+</div>
+</div>

@@ -1,0 +1,204 @@
+
+<style>
+.wrap { padding: 4px 0; }
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 10px; }
+.card-label { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-tertiary); margin: 0 0 12px; }
+.rule { font-size: 12px; color: var(--color-text-secondary); border-left: 2px solid var(--color-border-secondary); padding-left: 10px; margin: 12px 0 0; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.side { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; }
+.side-label { font-size: 10px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-text-tertiary); margin: 0 0 8px; }
+.side-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 2px; }
+.side-msg { font-size: 11px; color: var(--color-text-secondary); margin: 0 0 8px; }
+
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.tl-item { display: flex; gap: 10px; align-items: flex-start; position: relative; }
+.tl-item:not(:last-child) .tl-line { position: absolute; left: 6px; top: 16px; width: 1px; height: calc(100% + 2px); background: var(--color-border-secondary); }
+.tl-dot-wrap { width: 14px; flex-shrink: 0; padding-top: 3px; position: relative; }
+.tl-dot { width: 12px; height: 12px; border-radius: 50%; }
+.tl-body { flex: 1; padding-bottom: 12px; }
+.tl-ping-label { font-size: 12px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 1px; }
+.tl-time { font-size: 11px; color: var(--color-text-tertiary); margin: 0 0 2px; }
+.tl-note { font-size: 11px; color: var(--color-text-secondary); margin: 0; }
+.tl-reply { font-size: 11px; font-weight: 500; margin: 3px 0 0; }
+
+.d-gray   { background: #888780; }
+.d-amber  { background: #BA7517; }
+.d-red    { background: #E24B4A; }
+.d-crimson{ background: #791F1F; }
+.d-green  { background: #1D9E75; }
+
+.s-got  { color: #1D9E75; }
+.s-dec  { color: #E24B4A; }
+.s-none { color: #888780; }
+.s-crit { color: #791F1F; }
+
+.session-entry { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); margin-bottom: 8px; overflow: hidden; cursor: pointer; }
+.session-header { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--color-background-primary); }
+.session-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.session-info { flex: 1; }
+.session-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 1px; }
+.session-summary { font-size: 11px; color: var(--color-text-secondary); margin: 0; }
+.session-right { text-align: right; }
+.session-date { font-size: 11px; color: var(--color-text-tertiary); margin: 0 0 2px; }
+.session-outcome { font-size: 11px; font-weight: 500; margin: 0; }
+.session-expand { background: var(--color-background-secondary); border-top: 0.5px solid var(--color-border-tertiary); padding: 10px 12px; display: none; }
+.session-expand.open { display: block; }
+.expand-hint { font-size: 10px; color: var(--color-text-tertiary); text-align: right; margin: 0 0 8px; }
+
+.badge { display: inline-block; font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 99px; }
+.b-gray   { background: #F1EFE8; color: #5F5E5A; }
+.b-amber  { background: #FAEEDA; color: #633806; }
+.b-red    { background: #FCEBEB; color: #A32D2D; }
+.b-crimson{ background: #791F1F; color: #FCEBEB; }
+.b-green  { background: #E1F5EE; color: #085041; }
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Session transparency model showing both sender and receiver history with tap-to-expand timestamps</h2>
+
+<div class="card">
+  <p class="card-label">both sides hold the same record</p>
+  <div class="two-col">
+    <div class="side">
+      <p class="side-label">sender sees</p>
+      <p class="side-name">What I sent</p>
+      <p class="side-msg">Each ping time, escalation color, outcome. Their reply or absence of one.</p>
+    </div>
+    <div class="side">
+      <p class="side-label">receiver sees</p>
+      <p class="side-name">What I received</p>
+      <p class="side-msg">Each ping time, what I replied and when. Exact timestamps. No dispute possible.</p>
+    </div>
+  </div>
+  <p class="rule">The record is symmetric. Neither side can rewrite it. If the receiver declined, it shows on both logs. If they never replied, both logs show silence — not a fabricated decline.</p>
+</div>
+
+<div class="card">
+  <p class="card-label">past sessions — tap to expand</p>
+  <p style="font-size:12px;color:var(--color-text-secondary);margin:0 0 12px">Each entry in history is tappable. Collapsed view shows color + outcome. Expanded view shows the full ping timeline of that session.</p>
+
+  <div class="session-entry" onclick="toggleSession('s1')">
+    <div class="session-header">
+      <div class="session-dot d-green"></div>
+      <div class="session-info">
+        <p class="session-name">Amaka</p>
+        <p class="session-summary">Come fix my hair · got it at ping 1</p>
+      </div>
+      <div class="session-right">
+        <p class="session-date">Today</p>
+        <p class="session-outcome s-got">got it</p>
+      </div>
+    </div>
+    <div class="session-expand" id="s1">
+      <p class="expand-hint">tap to collapse</p>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot-wrap"><div class="tl-dot d-gray"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <p class="tl-ping-label">Ping 1 <span class="badge b-gray">sent</span></p>
+            <p class="tl-time">9:14:02 am</p>
+            <p class="tl-note">Signal delivered</p>
+            <p class="tl-reply s-got">Got it — 9:14:38 am</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="session-entry" onclick="toggleSession('s2')">
+    <div class="session-header">
+      <div class="session-dot d-amber"></div>
+      <div class="session-info">
+        <p class="session-name">Bello</p>
+        <p class="session-summary">Assemble at the gate · declined at ping 2</p>
+      </div>
+      <div class="session-right">
+        <p class="session-date">Today</p>
+        <p class="session-outcome s-dec">declined</p>
+      </div>
+    </div>
+    <div class="session-expand" id="s2">
+      <p class="expand-hint">tap to collapse</p>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot-wrap"><div class="tl-dot d-gray"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <p class="tl-ping-label">Ping 1 <span class="badge b-gray">sent</span></p>
+            <p class="tl-time">8:20:11 am</p>
+            <p class="tl-note">Signal delivered. No reply.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot-wrap"><div class="tl-dot d-amber"></div></div>
+          <div class="tl-body">
+            <p class="tl-ping-label">Ping 2 <span class="badge b-amber">re-ping</span></p>
+            <p class="tl-time">8:27:44 am</p>
+            <p class="tl-note">Signal delivered</p>
+            <p class="tl-reply s-dec">Declined — 8:28:03 am</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="session-entry" onclick="toggleSession('s3')">
+    <div class="session-header">
+      <div class="session-dot d-crimson"></div>
+      <div class="session-info">
+        <p class="session-name">Tunde</p>
+        <p class="session-summary">Prescription ready · no reply — session closed</p>
+      </div>
+      <div class="session-right">
+        <p class="session-date">Yesterday</p>
+        <p class="session-outcome s-crit">critical — closed</p>
+      </div>
+    </div>
+    <div class="session-expand" id="s3">
+      <p class="expand-hint">tap to collapse</p>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot-wrap"><div class="tl-dot d-gray"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <p class="tl-ping-label">Ping 1 <span class="badge b-gray">sent</span></p>
+            <p class="tl-time">2:10:05 pm</p>
+            <p class="tl-note">Signal delivered. No reply.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot-wrap"><div class="tl-dot d-amber"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <p class="tl-ping-label">Ping 2 <span class="badge b-amber">re-ping</span></p>
+            <p class="tl-time">2:18:30 pm</p>
+            <p class="tl-note">Signal delivered. No reply.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot-wrap"><div class="tl-dot d-red"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <p class="tl-ping-label">Ping 3 <span class="badge b-red">urgent</span></p>
+            <p class="tl-time">2:29:17 pm</p>
+            <p class="tl-note">Signal delivered. No reply.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot-wrap"><div class="tl-dot d-crimson"></div></div>
+          <div class="tl-body">
+            <p class="tl-ping-label">Ping 4 <span class="badge b-crimson">critical</span></p>
+            <p class="tl-time">2:41:52 pm</p>
+            <p class="tl-note">Signal delivered. No reply. Session sealed.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="rule">Timestamps are to the second. The gap between pings is visible — a sender who re-pinged after 8 minutes looks very different from one who re-pinged after 2 seconds.</p>
+</div>
+</div>
+
+<script>
+function toggleSession(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+</script>

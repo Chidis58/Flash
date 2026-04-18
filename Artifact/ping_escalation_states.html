@@ -1,0 +1,120 @@
+
+<style>
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 10px; }
+.card-label { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-tertiary); margin: 0 0 12px; }
+.ping-row { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+.ping-dot { border-radius: 50%; flex-shrink: 0; }
+.p1 { width: 28px; height: 28px; background: #D3D1C7; }
+.p2 { width: 34px; height: 34px; background: #EF9F27; }
+.p3 { width: 40px; height: 40px; background: #E24B4A; }
+.p4 { width: 46px; height: 46px; background: #791F1F; }
+.ping-info { flex: 1; }
+.ping-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 2px; }
+.ping-sub { font-size: 12px; color: var(--color-text-secondary); margin: 0 0 3px; }
+.ping-meta { font-size: 11px; color: var(--color-text-tertiary); margin: 0; }
+.ping-badge { display: inline-block; font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 99px; margin-top: 5px; }
+.b-normal { background: #F1EFE8; color: #5F5E5A; }
+.b-amber  { background: #FAEEDA; color: #633806; }
+.b-red    { background: #FCEBEB; color: #A32D2D; }
+.b-dark   { background: #791F1F; color: #FCEBEB; }
+.divider  { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 4px 0 12px; }
+.rule { font-size: 12px; color: var(--color-text-secondary); border-left: 2px solid var(--color-border-secondary); padding-left: 10px; margin: 10px 0 0; }
+
+.counter-row { display: flex; gap: 8px; align-items: center; margin-top: 14px; flex-wrap: wrap; }
+.counter-chip { font-size: 11px; padding: 4px 12px; border-radius: 99px; font-weight: 500; }
+.cc-1 { background: #F1EFE8; color: #5F5E5A; border: 0.5px solid #B4B2A9; }
+.cc-2 { background: #FAEEDA; color: #633806; border: 0.5px solid #EF9F27; }
+.cc-3 { background: #FCEBEB; color: #A32D2D; border: 0.5px solid #E24B4A; }
+.cc-4 { background: #791F1F; color: #FCEBEB; border: 0.5px solid #501313; }
+.arrow-right { font-size: 12px; color: var(--color-text-tertiary); }
+
+.ignored-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; margin-top: 10px; }
+.ignored-title { font-size: 12px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 4px; }
+.ignored-sub { font-size: 11px; color: var(--color-text-tertiary); margin: 0; }
+</style>
+
+<h2 class="sr-only">Ping escalation model — how repeated unanswered pings change intensity and countenance from neutral to critical</h2>
+
+<div class="card">
+  <p class="card-label">ping escalation — countenance model</p>
+
+  <div class="ping-row">
+    <div class="ping-dot p1"></div>
+    <div class="ping-info">
+      <p class="ping-title">Ping 1 — normal</p>
+      <p class="ping-sub">Standard vibration. Neutral mood.</p>
+      <p class="ping-meta">Single short buzz. Receiver sees sender name + predefined message.</p>
+      <span class="ping-badge b-normal">calm</span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="ping-row">
+    <div class="ping-dot p2"></div>
+    <div class="ping-info">
+      <p class="ping-title">Ping 2 — noticed</p>
+      <p class="ping-sub">No reply to first ping. Sender re-pings.</p>
+      <p class="ping-meta">Slightly longer buzz pattern. UI tint shifts to amber on receiver's end. Receiver knows this is a follow-up, not a first contact.</p>
+      <span class="ping-badge b-amber">attention</span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="ping-row">
+    <div class="ping-dot p3"></div>
+    <div class="ping-info">
+      <p class="ping-title">Ping 3 — urgent</p>
+      <p class="ping-sub">Still no reply. Third ping unlocks urgency tier.</p>
+      <p class="ping-meta">Double pulse vibration. UI runs red. Overrides DND on receiver's device. This ping cannot be silently ignored — it surfaces above other notifications.</p>
+      <span class="ping-badge b-red">urgent</span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="ping-row">
+    <div class="ping-dot p4"></div>
+    <div class="ping-info">
+      <p class="ping-title">Ping 4 — critical</p>
+      <p class="ping-sub">Horse blood red. No further pings permitted after this.</p>
+      <p class="ping-meta">Triple pulse. Screen flashes on receiver side. Sender is locked from pinging further — protocol enforces a cooldown. The ball is entirely in the receiver's court.</p>
+      <span class="ping-badge b-dark">critical — locked</span>
+    </div>
+  </div>
+
+  <p class="rule">After ping 4, the sender cannot re-ping until the receiver responds or the cooldown window expires. Prevents harassment. Preserves protocol integrity.</p>
+</div>
+
+<div class="card">
+  <p class="card-label">ping-back count — the ignored signal record</p>
+  <p style="font-size:12px;color:var(--color-text-secondary);margin:0 0 12px">When sender is convinced the receiver has ignored — not missed — the signal, the app surfaces a visible ping-back count on the receiver's profile. A silent social record.</p>
+
+  <div class="counter-row">
+    <span class="counter-chip cc-1">0 ignored</span>
+    <span class="arrow-right">→</span>
+    <span class="counter-chip cc-2">1–2 ignored</span>
+    <span class="arrow-right">→</span>
+    <span class="counter-chip cc-3">3–4 ignored</span>
+    <span class="arrow-right">→</span>
+    <span class="counter-chip cc-4">5+ ignored</span>
+  </div>
+
+  <div class="ignored-card" style="margin-top:12px">
+    <p class="ignored-title">What triggers an "ignored" mark</p>
+    <p class="ignored-sub">Signal was delivered (double tick). Reply window elapsed. Sender manually marks as ignored — or system auto-flags after configurable window. Receiver's ping-back count increments.</p>
+  </div>
+
+  <div class="ignored-card">
+    <p class="ignored-title">Who sees the ping-back count</p>
+    <p class="ignored-sub">Only the sender sees it on their end — against that specific relationship. It is not public. It is a personal accountability record. Like a call-back log that never got returned.</p>
+  </div>
+
+  <div class="ignored-card">
+    <p class="ignored-title">What the receiver sees</p>
+    <p class="ignored-sub">Nothing surfaced to the receiver directly — but their response rate is tracked silently. Useful in professional contexts where the sender is a superior. The record exists.</p>
+  </div>
+
+  <p class="rule">The ping-back count is not punitive. It is informational. It tells the sender: this person has a pattern. Adjust your expectations or your relationship setup.</p>
+</div>

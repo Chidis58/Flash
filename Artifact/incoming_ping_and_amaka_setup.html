@@ -1,0 +1,420 @@
+
+<style>
+* { box-sizing: border-box; }
+@keyframes breathe-amber  { 0%,100%{opacity:.55} 50%{opacity:1} }
+@keyframes breathe-purple { 0%,100%{opacity:.4}  50%{opacity:.8} }
+@keyframes pulse-crimson  { 0%,100%{opacity:.7;transform:scale(1)} 30%{opacity:1;transform:scale(1.1)} }
+@keyframes ring-expand    { 0%{transform:scale(.85);opacity:0} 40%{opacity:.6} 100%{transform:scale(1.6);opacity:0} }
+@keyframes ring-expand2   { 0%{transform:scale(.85);opacity:0} 40%{opacity:.4} 100%{transform:scale(1.8);opacity:0} }
+@keyframes dp-breathe     { 0%,100%{transform:scale(1)} 50%{transform:scale(1.04)} }
+@keyframes shake          { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-3px)} 40%{transform:translateX(3px)} 60%{transform:translateX(-2px)} 80%{transform:translateX(2px)} }
+@keyframes slide-up       { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+@keyframes collapse-orb   { 0%{transform:scale(1);opacity:1} 100%{transform:scale(0.18);opacity:.9} }
+@keyframes fade-in        { from{opacity:0} to{opacity:1} }
+@keyframes ripple         { 0%{transform:scale(1);opacity:.5} 100%{transform:scale(2.2);opacity:0} }
+
+.wrap { padding: 4px 0; }
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 10px; }
+.card-label { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-tertiary); margin: 0 0 14px; }
+.rule { font-size: 12px; color: var(--color-text-secondary); border-left: 2px solid var(--color-border-secondary); padding-left: 10px; margin: 14px 0 0; line-height: 1.6; }
+.divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 4px 0 12px; }
+
+.phone-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.phone-frame { width: 200px; background: var(--color-background-secondary); border-radius: 28px; padding: 12px 8px 18px; border: 0.5px solid var(--color-border-secondary); flex-shrink: 0; }
+.phone-label { font-size: 10px; font-weight: 500; color: var(--color-text-tertiary); text-align: center; margin-top: 10px; letter-spacing: 0.04em; text-transform: uppercase; }
+.screen { border-radius: 18px; overflow: hidden; position: relative; }
+.sb { display: flex; justify-content: space-between; padding: 6px 10px 0; }
+.sbt { font-size: 10px; font-weight: 500; color: var(--color-text-tertiary); }
+
+.incoming-screen { background: #0a0a0a; min-height: 320px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 24px 16px 20px; position: relative; overflow: hidden; }
+.is-glow-bg { position: absolute; inset: 0; border-radius: 18px; }
+.is-glow-amber  { background: radial-gradient(circle at 50% 40%, rgba(186,117,23,.35) 0%, transparent 70%); }
+.is-glow-purple { background: radial-gradient(circle at 50% 40%, rgba(127,119,221,.3) 0%, transparent 70%); }
+.is-glow-crimson{ background: radial-gradient(circle at 50% 40%, rgba(121,31,31,.45) 0%, transparent 70%); }
+
+.orb-wrap { position: relative; display: flex; align-items: center; justify-content: center; width: 100px; height: 100px; z-index: 2; }
+.orb-glow-big { position: absolute; width: 100px; height: 100px; border-radius: 50%; filter: blur(22px); }
+.og-amber  { background: #BA7517; animation: breathe-amber 1.8s ease-in-out infinite; }
+.og-purple { background: #7F77DD; animation: breathe-purple 2.2s ease-in-out infinite; }
+.og-crimson{ background: #791F1F; animation: pulse-crimson .7s ease-in-out infinite; }
+.orb-glass-big { position: absolute; width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,.04); border: 0.5px solid rgba(255,255,255,.1); z-index: 1; }
+.ripple1 { position: absolute; width: 80px; height: 80px; border-radius: 50%; border: 1px solid rgba(255,255,255,.15); animation: ripple 1.8s ease-out infinite; z-index: 0; }
+.ripple2 { position: absolute; width: 80px; height: 80px; border-radius: 50%; border: 1px solid rgba(255,255,255,.1); animation: ripple 1.8s ease-out infinite .6s; z-index: 0; }
+.ripple3 { position: absolute; width: 80px; height: 80px; border-radius: 50%; border: 1px solid rgba(255,255,255,.07); animation: ripple 1.8s ease-out infinite 1.2s; z-index: 0; }
+.orb-dp-big { width: 46px; height: 46px; border-radius: 50%; z-index: 3; border: 1.5px solid rgba(255,255,255,.15); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 500; animation: dp-breathe 1.8s ease-in-out infinite; }
+.av-amber-big  { background: #633806; color: #FAC775; }
+.av-purple-big { background: #3C3489; color: #CECBF6; }
+.av-crimson-big{ background: #791F1F; color: #FCEBEB; }
+
+.incoming-top { text-align: center; z-index: 2; animation: slide-up .4s ease-out; }
+.it-from { font-size: 11px; color: rgba(255,255,255,.45); margin: 0 0 3px; letter-spacing: .04em; text-transform: uppercase; }
+.it-name { font-size: 18px; font-weight: 500; color: #fff; margin: 0 0 4px; }
+.it-msg  { font-size: 12px; color: rgba(255,255,255,.65); margin: 0; line-height: 1.4; }
+
+.incoming-actions { display: flex; gap: 20px; z-index: 2; animation: slide-up .5s ease-out .1s both; }
+.ia-btn { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; }
+.ia-circle { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.ia-got    { background: #1D9E75; }
+.ia-dec    { background: #791F1F; }
+.ia-snooze { background: rgba(255,255,255,.12); border: 0.5px solid rgba(255,255,255,.2); }
+.ia-label  { font-size: 10px; color: rgba(255,255,255,.5); }
+.ia-icon   { font-size: 16px; }
+
+.timer-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: rgba(255,255,255,.1); z-index: 5; }
+.timer-fill { height: 100%; border-radius: 2px; }
+.tf-amber  { background: #BA7517; }
+.tf-purple { background: #7F77DD; }
+.tf-crimson{ background: #791F1F; }
+
+.collapsed-screen { background: var(--color-background-primary); min-height: 320px; }
+.cs-nav { display: flex; align-items: center; padding: 10px 10px 8px; border-bottom: 0.5px solid var(--color-border-tertiary); gap: 8px; }
+.cs-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); flex: 1; }
+.cs-section { padding: 8px 10px 4px; }
+.cs-label { font-size: 9px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--color-text-tertiary); margin: 0 0 6px; }
+
+.live-item { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.live-item:last-child { border-bottom: none; }
+.mini-orb-wrap { position: relative; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.mini-glow { position: absolute; width: 32px; height: 32px; border-radius: 50%; filter: blur(7px); }
+.mini-dp { width: 20px; height: 20px; border-radius: 50%; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 500; border: 1px solid rgba(255,255,255,.1); }
+.mg-amber  { background: #BA7517; animation: breathe-amber 2s ease-in-out infinite; }
+.mg-purple { background: #7F77DD; animation: breathe-purple 2.5s ease-in-out infinite; }
+.mg-crimson{ background: #791F1F; animation: pulse-crimson .7s ease-in-out infinite; }
+.md-amber  { background: #633806; color: #FAC775; }
+.md-purple { background: #3C3489; color: #CECBF6; }
+.md-crimson{ background: #791F1F; color: #FCEBEB; }
+.li-info { flex: 1; min-width: 0; }
+.li-name { font-size: 12px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 1px; }
+.li-msg  { font-size: 10px; color: var(--color-text-secondary); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.li-right { text-align: right; flex-shrink: 0; }
+.li-time  { font-size: 10px; color: var(--color-text-tertiary); margin: 0 0 2px; }
+.li-status{ font-size: 10px; font-weight: 500; margin: 0; }
+.ls-wait  { color: #BA7517; }
+.ls-warm  { color: #7F77DD; }
+.ls-crit  { color: #791F1F; }
+
+.new-ping-banner { background: #BA7517; padding: 7px 10px; display: flex; align-items: center; gap: 8px; animation: slide-up .3s ease-out; }
+.npb-dot { width: 6px; height: 6px; border-radius: 50%; background: #FAC775; animation: breathe-amber 1s ease-in-out infinite; }
+.npb-text { font-size: 11px; color: #FAC775; font-weight: 500; flex: 1; }
+.npb-act  { font-size: 10px; color: #FAC775; font-weight: 500; border: 0.5px solid rgba(255,200,100,.4); padding: 3px 8px; border-radius: 99px; }
+
+.setup-screen { background: var(--color-background-primary); min-height: 320px; }
+.setup-top { padding: 12px 12px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.setup-back { font-size: 11px; color: var(--color-text-secondary); }
+.setup-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin: 6px 0 2px; }
+.setup-sub   { font-size: 11px; color: var(--color-text-secondary); margin: 0; }
+.setup-body  { padding: 12px; }
+.from-card   { display: flex; gap: 10px; align-items: center; background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; margin-bottom: 10px; }
+.from-av     { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; background: #EEEDFE; color: #3C3489; flex-shrink: 0; }
+.from-name   { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 1px; }
+.from-sub    { font-size: 11px; color: var(--color-text-secondary); margin: 0; }
+.review-row  { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.review-row:last-child { border-bottom: none; }
+.rr-key      { font-size: 11px; color: var(--color-text-tertiary); }
+.rr-val      { font-size: 11px; font-weight: 500; color: var(--color-text-primary); text-align: right; max-width: 55%; }
+.edit-pill   { font-size: 10px; color: #534AB7; background: #EEEDFE; padding: 1px 7px; border-radius: 99px; cursor: pointer; }
+.action-row  { display: flex; gap: 7px; margin-top: 12px; }
+.accept-btn  { flex: 2; padding: 10px; border-radius: var(--border-radius-lg); font-size: 12px; font-weight: 500; border: none; cursor: pointer; background: var(--color-text-primary); color: var(--color-background-primary); }
+.edit-btn    { flex: 1; padding: 10px; border-radius: var(--border-radius-lg); font-size: 12px; font-weight: 500; border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-secondary); cursor: pointer; }
+.decline-lnk { display: block; text-align: center; font-size: 11px; color: var(--color-text-tertiary); margin-top: 8px; cursor: pointer; }
+
+.tabs { display: flex; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.tab  { flex: 1; font-size: 11px; font-weight: 500; padding: 7px 4px; text-align: center; color: var(--color-text-tertiary); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tab.on { color: var(--color-text-primary); border-bottom-color: var(--color-text-primary); }
+.tc { display: none; }
+.tc.on { display: block; }
+
+.progress-row { display: flex; gap: 4px; padding: 6px 10px; }
+.prog { flex: 1; height: 2px; border-radius: 1px; background: var(--color-border-tertiary); }
+.prog.done   { background: #1D9E75; }
+.prog.active { background: #BA7517; }
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Incoming ping full-screen takeover, collapse to ambient, and Amaka's setup acceptance screen</h2>
+
+<div class="card">
+  <p class="card-label">incoming ping — three scenarios, full-screen takeover</p>
+  <div class="phone-row">
+
+    <div>
+      <div class="phone-frame">
+        <div class="sb"><span class="sbt">9:41</span></div>
+        <div class="screen">
+          <div class="incoming-screen">
+            <div class="is-glow-bg is-glow-amber"></div>
+            <div class="incoming-top">
+              <p class="it-from">action ping from</p>
+              <p class="it-name">Bello</p>
+              <p class="it-msg">Assemble at the gate now</p>
+            </div>
+            <div class="orb-wrap">
+              <div class="orb-glow-big og-amber"></div>
+              <div class="ripple1"></div>
+              <div class="ripple2"></div>
+              <div class="ripple3"></div>
+              <div class="orb-glass-big"></div>
+              <div class="orb-dp-big av-amber-big">BL</div>
+            </div>
+            <div class="incoming-actions">
+              <div class="ia-btn">
+                <div class="ia-circle ia-got"><span class="ia-icon">✓</span></div>
+                <span class="ia-label">got it</span>
+              </div>
+              <div class="ia-btn">
+                <div class="ia-circle ia-dec"><span class="ia-icon">✕</span></div>
+                <span class="ia-label">decline</span>
+              </div>
+            </div>
+            <div class="timer-bar"><div class="timer-fill tf-amber" style="width:60%;transition:width 3s linear"></div></div>
+          </div>
+        </div>
+      </div>
+      <p class="phone-label">Action ping · ping 1</p>
+    </div>
+
+    <div>
+      <div class="phone-frame">
+        <div class="sb"><span class="sbt">9:41</span></div>
+        <div class="screen">
+          <div class="incoming-screen">
+            <div class="is-glow-bg is-glow-purple"></div>
+            <div class="incoming-top">
+              <p class="it-from">warmth ping from</p>
+              <p class="it-name">Amaka</p>
+              <p class="it-msg">Thinking of you</p>
+            </div>
+            <div class="orb-wrap">
+              <div class="orb-glow-big og-purple"></div>
+              <div class="ripple1"></div>
+              <div class="ripple2"></div>
+              <div class="orb-glass-big"></div>
+              <div class="orb-dp-big av-purple-big">AK</div>
+            </div>
+            <div class="incoming-actions">
+              <div class="ia-btn">
+                <div class="ia-circle ia-got"><span class="ia-icon">◎</span></div>
+                <span class="ia-label">felt</span>
+              </div>
+              <div class="ia-btn">
+                <div class="ia-circle ia-snooze"><span class="ia-icon" style="color:rgba(255,255,255,.6);font-size:14px">···</span></div>
+                <span class="ia-label">later</span>
+              </div>
+            </div>
+            <div class="timer-bar"><div class="timer-fill tf-purple" style="width:35%;transition:width 3s linear"></div></div>
+          </div>
+        </div>
+      </div>
+      <p class="phone-label">Warmth ping · no pressure</p>
+    </div>
+
+    <div>
+      <div class="phone-frame">
+        <div class="sb"><span class="sbt">9:41</span></div>
+        <div class="screen">
+          <div class="incoming-screen">
+            <div class="is-glow-bg is-glow-crimson"></div>
+            <div class="incoming-top">
+              <p class="it-from" style="color:rgba(255,180,180,.6)">re-ping · ping 3</p>
+              <p class="it-name">Dr. Obi</p>
+              <p class="it-msg">Patient ready for vitals</p>
+            </div>
+            <div class="orb-wrap">
+              <div class="orb-glow-big og-crimson"></div>
+              <div class="ripple1"></div>
+              <div class="ripple2"></div>
+              <div class="ripple3"></div>
+              <div class="orb-glass-big"></div>
+              <div class="orb-dp-big av-crimson-big" style="animation: dp-breathe 1.8s ease-in-out infinite, shake 0.5s ease-in-out infinite">DR</div>
+            </div>
+            <div class="incoming-actions">
+              <div class="ia-btn">
+                <div class="ia-circle ia-got"><span class="ia-icon">✓</span></div>
+                <span class="ia-label">got it</span>
+              </div>
+              <div class="ia-btn">
+                <div class="ia-circle ia-dec"><span class="ia-icon">✕</span></div>
+                <span class="ia-label">decline</span>
+              </div>
+            </div>
+            <div class="timer-bar"><div class="timer-fill tf-crimson" style="width:20%;transition:width 3s linear"></div></div>
+          </div>
+        </div>
+      </div>
+      <p class="phone-label">Re-ping · ping 3 · urgent</p>
+    </div>
+
+  </div>
+  <p class="rule" style="margin-top:14px">The timer bar at the bottom is the 3-second window. It drains visually — the receiver sees exactly how long they have before the full screen collapses. The ripple rings communicate "something is happening now" without any text. On re-pings the face shakes slightly — a physical urgency cue that's impossible to miss. Warmth pings replace decline with "later" — no rejection language, just a gentle deferral.</p>
+</div>
+
+<hr class="divider">
+
+<div class="card">
+  <p class="card-label">after 3 seconds — collapse to ambient live stack</p>
+  <div class="phone-row">
+    <div>
+      <div class="phone-frame">
+        <div class="sb"><span class="sbt">9:41</span></div>
+        <div class="screen">
+          <div class="collapsed-screen">
+            <div class="new-ping-banner">
+              <div class="npb-dot"></div>
+              <span class="npb-text">Bello · waiting for reply</span>
+              <span class="npb-act">reply</span>
+            </div>
+            <div class="cs-nav">
+              <span class="cs-title">My signals</span>
+            </div>
+            <div class="progress-row">
+              <div class="prog done"></div>
+              <div class="prog done"></div>
+              <div class="prog active"></div>
+              <div class="prog"></div>
+            </div>
+            <div class="cs-section">
+              <p class="cs-label">active now</p>
+              <div class="live-item">
+                <div class="mini-orb-wrap">
+                  <div class="mini-glow mg-amber"></div>
+                  <div class="mini-dp md-amber">BL</div>
+                </div>
+                <div class="li-info">
+                  <p class="li-name">Bello</p>
+                  <p class="li-msg">Assemble at the gate now</p>
+                </div>
+                <div class="li-right">
+                  <p class="li-time">just now</p>
+                  <p class="li-status ls-wait">waiting</p>
+                </div>
+              </div>
+              <div class="live-item">
+                <div class="mini-orb-wrap">
+                  <div class="mini-glow mg-purple"></div>
+                  <div class="mini-dp md-purple">AK</div>
+                </div>
+                <div class="li-info">
+                  <p class="li-name">Amaka</p>
+                  <p class="li-msg">Thinking of you</p>
+                </div>
+                <div class="li-right">
+                  <p class="li-time">2 min ago</p>
+                  <p class="li-status ls-warm">warmth</p>
+                </div>
+              </div>
+              <div class="live-item">
+                <div class="mini-orb-wrap">
+                  <div class="mini-glow mg-crimson"></div>
+                  <div class="mini-dp md-crimson">DR</div>
+                </div>
+                <div class="li-info">
+                  <p class="li-name">Dr. Obi</p>
+                  <p class="li-msg">Patient ready for vitals</p>
+                </div>
+                <div class="li-right">
+                  <p class="li-time">8 min ago</p>
+                  <p class="li-status ls-crit">ping 3</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="phone-label">Collapsed — joined live stack</p>
+    </div>
+  </div>
+  <p class="rule">After collapse the full-screen is gone but nothing is lost. The ping joins the live stack as a mini Orb — still breathing, still waiting. The amber banner at the top is a persistent but non-intrusive reminder. One tap anywhere on the row opens the session detail. The receiver can keep doing what they were doing — the ping has settled into their peripheral awareness rather than demanding they stop.</p>
+</div>
+
+<hr class="divider">
+
+<div class="card">
+  <p class="card-label">Amaka's side — incoming setup request</p>
+  <div style="max-width:280px;margin:0 auto">
+    <div class="phone-frame" style="width:100%">
+      <div class="sb"><span class="sbt">9:41</span></div>
+      <div class="screen">
+        <div class="tabs">
+          <div class="tab on" onclick="sw('action',this)">Action invite</div>
+          <div class="tab" onclick="sw('warmth',this)">Warmth invite</div>
+        </div>
+
+        <div class="tc on" id="tc-action">
+          <div class="setup-top">
+            <p class="setup-back">← notifications</p>
+            <p class="setup-title">Signal setup request</p>
+            <p class="setup-sub">Review and accept to activate this relationship</p>
+          </div>
+          <div class="setup-body">
+            <div class="from-card">
+              <div class="from-av">YO</div>
+              <div>
+                <p class="from-name">You (sender)</p>
+                <p class="from-sub">wants to set up an action signal</p>
+              </div>
+            </div>
+            <div>
+              <div class="review-row"><span class="rr-key">Type</span><span class="rr-val">Action signal</span></div>
+              <div class="review-row"><span class="rr-key">Your role</span><span class="rr-val">Provider <span class="edit-pill">edit</span></span></div>
+              <div class="review-row"><span class="rr-key">Their ping means</span><span class="rr-val">Come fix my hair <span class="edit-pill">edit</span></span></div>
+              <div class="review-row"><span class="rr-key">Your ping means</span><span class="rr-val">Can I come do your hair? <span class="edit-pill">edit</span></span></div>
+              <div class="review-row"><span class="rr-key">Expiry</span><span class="rr-val">2 hours</span></div>
+              <div class="review-row"><span class="rr-key">Reply window</span><span class="rr-val">10 min</span></div>
+              <div class="review-row"><span class="rr-key">DND override</span><span class="rr-val">Ping 3+</span></div>
+            </div>
+            <div class="action-row">
+              <button class="accept-btn" onclick="sendPrompt('What happens after Amaka accepts the setup request?')">Accept relationship ↗</button>
+              <button class="edit-btn">Negotiate</button>
+            </div>
+            <a class="decline-lnk">Decline request</a>
+          </div>
+        </div>
+
+        <div class="tc" id="tc-warmth">
+          <div class="setup-top">
+            <p class="setup-back">← notifications</p>
+            <p class="setup-title">Warmth signal invite</p>
+            <p class="setup-sub">A gentle connection — no pressure, no obligations</p>
+          </div>
+          <div class="setup-body">
+            <div class="from-card" style="background:#EEEDFE">
+              <div class="from-av">YO</div>
+              <div>
+                <p class="from-name" style="color:#26215C">You (sender)</p>
+                <p class="from-sub" style="color:#534AB7">wants a warmth signal with Amaka</p>
+              </div>
+            </div>
+            <div>
+              <div class="review-row"><span class="rr-key">Ping means</span><span class="rr-val">Thinking of you</span></div>
+              <div class="review-row"><span class="rr-key">Direction</span><span class="rr-val">Either side, anytime</span></div>
+              <div class="review-row"><span class="rr-key">Reply needed</span><span class="rr-val">Never required</span></div>
+              <div class="review-row"><span class="rr-key">Palette</span>
+                <span class="rr-val" style="display:flex;align-items:center;gap:5px;justify-content:flex-end">
+                  <span style="width:12px;height:12px;border-radius:50%;background:#7F77DD;display:inline-block"></span> Purple
+                </span>
+              </div>
+              <div class="review-row"><span class="rr-key">Daily limit</span><span class="rr-val">3 per day</span></div>
+            </div>
+            <div class="action-row">
+              <button class="accept-btn" style="background:#534AB7">Accept warmth ↗</button>
+              <button class="edit-btn">Edit palette</button>
+            </div>
+            <a class="decline-lnk">Not right now</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <p class="rule">Amaka sees exactly what was proposed — every setting, every meaning, every timing parameter. Each field she disagrees with has an inline edit pill. The Negotiate button opens a counter-proposal flow rather than a blank form — she edits only what she wants changed and sends it back. Nothing goes live until both sides have agreed to the same version. The warmth invite uses softer language throughout — "Not right now" instead of "Decline." Even the rejection is gentle.</p>
+</div>
+</div>
+
+<script>
+function sw(name, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.querySelectorAll('.tc').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('tc-' + name).classList.add('on');
+}
+</script>

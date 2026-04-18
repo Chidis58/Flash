@@ -1,0 +1,350 @@
+
+<style>
+* { box-sizing: border-box; }
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 10px; }
+.card-label { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-tertiary); margin: 0 0 12px; }
+.rule { font-size: 12px; color: var(--color-text-secondary); border-left: 2px solid var(--color-border-secondary); padding-left: 10px; margin: 12px 0 0; line-height: 1.6; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 4px; }
+.col-block { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; }
+.col-title { font-size: 12px; font-weight: 500; margin: 0 0 8px; }
+.col-yes { color: #085041; }
+.col-no  { color: #791F1F; }
+.badge-row { display: flex; flex-wrap: wrap; gap: 5px; }
+.badge { font-size: 11px; padding: 3px 9px; border-radius: 99px; font-weight: 500; }
+.b-yes { background: #E1F5EE; color: #085041; }
+.b-no  { background: #FCEBEB; color: #A32D2D; }
+
+.divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 4px 0 12px; }
+
+.phone-wrap { max-width: 300px; margin: 0 auto; }
+.phone-frame { background: var(--color-background-secondary); border-radius: 28px; padding: 14px 10px 20px; border: 0.5px solid var(--color-border-secondary); }
+.status-bar { display: flex; justify-content: space-between; padding: 0 6px 10px; }
+.st { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); }
+.screen { background: var(--color-background-primary); border-radius: 18px; overflow: hidden; }
+
+.nav-bar { display: flex; align-items: center; gap: 10px; padding: 12px 12px 8px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.nav-back { font-size: 11px; color: var(--color-text-secondary); padding: 3px 7px; border-radius: var(--border-radius-md); background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); cursor: pointer; }
+.nav-name { font-size: 14px; font-weight: 500; color: var(--color-text-primary); flex: 1; }
+.nav-sub  { font-size: 10px; color: var(--color-text-tertiary); }
+
+.tabs { display: flex; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.tab { flex: 1; font-size: 11px; font-weight: 500; padding: 7px 4px; text-align: center; color: var(--color-text-tertiary); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tab.on { color: var(--color-text-primary); border-bottom-color: var(--color-text-primary); }
+
+.tc { display: none; }
+.tc.on { display: block; }
+
+.timeline-view { padding: 10px 12px; }
+.year-label { font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-tertiary); margin: 0 0 8px; }
+
+.session-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 2px; cursor: pointer; padding: 6px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.session-row:last-child { border-bottom: none; }
+.s-bar { width: 3px; border-radius: 2px; flex-shrink: 0; align-self: stretch; min-height: 28px; }
+.sb-green  { background: #1D9E75; }
+.sb-amber  { background: #BA7517; }
+.sb-red    { background: #E24B4A; }
+.sb-crimson{ background: #791F1F; }
+.sb-gray   { background: #888780; }
+.s-info { flex: 1; min-width: 0; }
+.s-date { font-size: 11px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 1px; }
+.s-outcome { font-size: 11px; color: var(--color-text-secondary); margin: 0; }
+.s-badge { font-size: 10px; font-weight: 500; padding: 1px 6px; border-radius: 99px; margin-left: 4px; }
+.sb-g { background: #E1F5EE; color: #085041; }
+.sb-d { background: #FCEBEB; color: #A32D2D; }
+.sb-e { background: #F1EFE8; color: #5F5E5A; }
+.sb-c { background: #791F1F; color: #FCEBEB; }
+.s-right { text-align: right; flex-shrink: 0; }
+.s-time { font-size: 10px; color: var(--color-text-tertiary); margin: 0; }
+.s-pings { font-size: 10px; color: var(--color-text-tertiary); margin: 2px 0 0; }
+
+.expanded-session { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 8px 10px; margin: 0 0 8px; display: none; }
+.expanded-session.open { display: block; }
+.exp-tl-row { display: flex; gap: 7px; align-items: flex-start; padding: 4px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.exp-tl-row:last-child { border-bottom: none; }
+.exp-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+.exp-text { flex: 1; }
+.exp-p { font-size: 11px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 1px; }
+.exp-t { font-size: 10px; color: var(--color-text-tertiary); margin: 0; }
+.exp-r { font-size: 10px; font-weight: 500; margin: 2px 0 0; }
+.r-got { color: #1D9E75; }
+.r-dec { color: #E24B4A; }
+.r-non { color: #888780; }
+.gap-note { font-size: 9px; color: var(--color-text-tertiary); padding: 2px 0 2px 15px; font-style: italic; }
+
+.stats-view { padding: 10px 12px; }
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+.stat-chip { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 8px 10px; text-align: center; }
+.stat-num { font-size: 18px; font-weight: 500; margin: 0 0 1px; }
+.stat-lbl { font-size: 10px; color: var(--color-text-tertiary); margin: 0; text-transform: uppercase; letter-spacing: 0.04em; }
+.n-g { color: #1D9E75; }
+.n-r { color: #E24B4A; }
+.n-a { color: #BA7517; }
+.n-c { color: #791F1F; }
+
+.bar-chart { margin-top: 8px; }
+.bar-label { font-size: 10px; color: var(--color-text-tertiary); margin: 0 0 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+.bar-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+.bar-name { font-size: 11px; color: var(--color-text-secondary); width: 52px; flex-shrink: 0; text-align: right; }
+.bar-track { flex: 1; height: 6px; background: var(--color-border-tertiary); border-radius: 3px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 3px; }
+.bar-val { font-size: 10px; color: var(--color-text-tertiary); width: 20px; flex-shrink: 0; }
+
+.meaning-view { padding: 10px 12px; }
+.meaning-block { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 9px 11px; margin-bottom: 8px; }
+.m-label { font-size: 10px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-text-tertiary); margin: 0 0 4px; }
+.m-msg { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 2px; }
+.m-since { font-size: 10px; color: var(--color-text-tertiary); margin: 0; }
+.meaning-history { margin-top: 8px; }
+.mh-label { font-size: 10px; color: var(--color-text-tertiary); margin: 0 0 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+.mh-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 11px; }
+.mh-row:last-child { border-bottom: none; }
+.mh-old { color: var(--color-text-tertiary); text-decoration: line-through; }
+.mh-date { color: var(--color-text-tertiary); font-size: 10px; }
+</style>
+
+<h2 class="sr-only">Attachment boundary rules and relationship history view with timeline, stats and meaning tabs</h2>
+
+<div class="card">
+  <p class="card-label">attachment boundary — context only, never content</p>
+  <div class="two-col">
+    <div class="col-block">
+      <p class="col-title col-yes">allowed badges</p>
+      <div class="badge-row">
+        <span class="badge b-yes">location pin</span>
+        <span class="badge b-yes">ETA — 5 min</span>
+        <span class="badge b-yes">ETA — 10 min</span>
+        <span class="badge b-yes">ETA — 30 min</span>
+        <span class="badge b-yes">floor / room</span>
+        <span class="badge b-yes">urgency flag</span>
+        <span class="badge b-yes">time slot</span>
+      </div>
+    </div>
+    <div class="col-block">
+      <p class="col-title col-no">never allowed</p>
+      <div class="badge-row">
+        <span class="badge b-no">video</span>
+        <span class="badge b-no">document</span>
+        <span class="badge b-no">image</span>
+        <span class="badge b-no">voice note</span>
+        <span class="badge b-no">free text</span>
+        <span class="badge b-no">link</span>
+        <span class="badge b-no">emoji</span>
+      </div>
+    </div>
+  </div>
+  <p class="rule">Badges sharpen the predefined meaning without adding new meaning. A location pin answers "where" — it doesn't start a conversation. The moment an attachment can say something the predefined message doesn't, it becomes messaging. That line must hold.</p>
+</div>
+
+<hr class="divider">
+
+<div class="phone-wrap">
+  <div class="phone-frame">
+    <div class="status-bar"><span class="st">9:41</span></div>
+    <div class="screen">
+
+      <div class="nav-bar">
+        <button class="nav-back">← back</button>
+        <div>
+          <p class="nav-name">Amaka Osei</p>
+          <p class="nav-sub">Since March 2024 · 34 sessions</p>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab on" onclick="showTab('timeline', this)">Timeline</div>
+        <div class="tab" onclick="showTab('stats', this)">Stats</div>
+        <div class="tab" onclick="showTab('meaning', this)">Meanings</div>
+      </div>
+
+      <div class="tc on" id="tab-timeline">
+        <div class="timeline-view">
+          <p class="year-label">April 2026</p>
+
+          <div class="session-row" onclick="toggleExp('e1')">
+            <div class="s-bar sb-green"></div>
+            <div class="s-info">
+              <p class="s-date">Today, 9:14 am <span class="s-badge sb-g">got it</span></p>
+              <p class="s-outcome">Come fix my hair</p>
+            </div>
+            <div class="s-right">
+              <p class="s-time">ping 1</p>
+            </div>
+          </div>
+          <div class="expanded-session" id="e1">
+            <div class="exp-tl-row">
+              <div class="exp-dot" style="background:#888780"></div>
+              <div class="exp-text">
+                <p class="exp-p">Ping 1 — 9:14:02 am</p>
+                <p class="exp-r r-got">Got it — 9:14:38 am</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="session-row" onclick="toggleExp('e2')">
+            <div class="s-bar sb-amber"></div>
+            <div class="s-info">
+              <p class="s-date">Apr 11 <span class="s-badge sb-d">declined</span></p>
+              <p class="s-outcome">Come fix my hair</p>
+            </div>
+            <div class="s-right">
+              <p class="s-time">ping 2</p>
+            </div>
+          </div>
+          <div class="expanded-session" id="e2">
+            <div class="exp-tl-row">
+              <div class="exp-dot" style="background:#888780"></div>
+              <div class="exp-text">
+                <p class="exp-p">Ping 1 — 2:10:05 pm</p>
+                <p class="exp-r r-non">No reply</p>
+              </div>
+            </div>
+            <div class="gap-note">11 min 22 sec gap</div>
+            <div class="exp-tl-row">
+              <div class="exp-dot" style="background:#BA7517"></div>
+              <div class="exp-text">
+                <p class="exp-p">Ping 2 — 2:21:27 pm</p>
+                <p class="exp-r r-dec">Declined — 2:21:55 pm</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="session-row" onclick="toggleExp('e3')">
+            <div class="s-bar sb-crimson"></div>
+            <div class="s-info">
+              <p class="s-date">Apr 8 <span class="s-badge sb-c">no reply</span></p>
+              <p class="s-outcome">Come fix my hair</p>
+            </div>
+            <div class="s-right">
+              <p class="s-time">ping 4</p>
+            </div>
+          </div>
+          <div class="expanded-session" id="e3">
+            <div class="exp-tl-row">
+              <div class="exp-dot" style="background:#888780"></div>
+              <div class="exp-text"><p class="exp-p">Ping 1 — 10:00:00 am</p><p class="exp-r r-non">No reply</p></div>
+            </div>
+            <div class="gap-note">9 min 14 sec gap</div>
+            <div class="exp-tl-row">
+              <div class="exp-dot" style="background:#BA7517"></div>
+              <div class="exp-text"><p class="exp-p">Ping 2 — 10:09:14 am</p><p class="exp-r r-non">No reply</p></div>
+            </div>
+            <div class="gap-note">10 min 02 sec gap</div>
+            <div class="exp-tl-row">
+              <div class="exp-dot" style="background:#E24B4A"></div>
+              <div class="exp-text"><p class="exp-p">Ping 3 — 10:19:16 am</p><p class="exp-r r-non">No reply</p></div>
+            </div>
+            <div class="gap-note">12 min 38 sec gap</div>
+            <div class="exp-tl-row">
+              <div class="exp-dot" style="background:#791F1F"></div>
+              <div class="exp-text"><p class="exp-p">Ping 4 — 10:31:54 am</p><p class="exp-r r-non">No reply — session sealed</p></div>
+            </div>
+          </div>
+
+          <div class="session-row">
+            <div class="s-bar sb-green"></div>
+            <div class="s-info">
+              <p class="s-date">Apr 5 <span class="s-badge sb-g">got it</span></p>
+              <p class="s-outcome">Come fix my hair</p>
+            </div>
+            <div class="s-right"><p class="s-time">ping 1</p></div>
+          </div>
+
+          <p class="year-label" style="margin-top:10px">March 2026</p>
+
+          <div class="session-row">
+            <div class="s-bar sb-green"></div>
+            <div class="s-info">
+              <p class="s-date">Mar 28 <span class="s-badge sb-g">got it</span></p>
+              <p class="s-outcome">Come fix my hair</p>
+            </div>
+            <div class="s-right"><p class="s-time">ping 1</p></div>
+          </div>
+
+          <div class="session-row">
+            <div class="s-bar sb-gray"></div>
+            <div class="s-info">
+              <p class="s-date">Mar 20 <span class="s-badge sb-e">expired</span></p>
+              <p class="s-outcome">Come fix my hair</p>
+            </div>
+            <div class="s-right"><p class="s-time">ping 1</p></div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="tc" id="tab-stats">
+        <div class="stats-view">
+          <div class="stat-grid">
+            <div class="stat-chip"><p class="stat-num n-g">27</p><p class="stat-lbl">got it</p></div>
+            <div class="stat-chip"><p class="stat-num n-r">4</p><p class="stat-lbl">declined</p></div>
+            <div class="stat-chip"><p class="stat-num n-a">2</p><p class="stat-lbl">expired</p></div>
+            <div class="stat-chip"><p class="stat-num n-c">1</p><p class="stat-lbl">critical</p></div>
+          </div>
+          <div class="bar-chart">
+            <p class="bar-label">response rate by month</p>
+            <div class="bar-row">
+              <span class="bar-name">Apr</span>
+              <div class="bar-track"><div class="bar-fill" style="width:60%;background:#1D9E75"></div></div>
+              <span class="bar-val">3/5</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-name">Mar</span>
+              <div class="bar-track"><div class="bar-fill" style="width:80%;background:#1D9E75"></div></div>
+              <span class="bar-val">8/10</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-name">Feb</span>
+              <div class="bar-track"><div class="bar-fill" style="width:90%;background:#1D9E75"></div></div>
+              <span class="bar-val">9/10</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-name">Jan</span>
+              <div class="bar-track"><div class="bar-fill" style="width:100%;background:#1D9E75"></div></div>
+              <span class="bar-val">9/9</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tc" id="tab-meaning">
+        <div class="meaning-view">
+          <div class="meaning-block">
+            <p class="m-label">your ping → Amaka</p>
+            <p class="m-msg">Come and fix my hair</p>
+            <p class="m-since">Active since Mar 14, 2024</p>
+          </div>
+          <div class="meaning-block">
+            <p class="m-label">Amaka's ping → you</p>
+            <p class="m-msg">Can I come and do your hair?</p>
+            <p class="m-since">Active since Mar 14, 2024</p>
+          </div>
+          <div class="meaning-history">
+            <p class="mh-label">meaning history</p>
+            <div class="mh-row">
+              <span class="mh-old">Come do my hair urgently</span>
+              <span class="mh-date">Changed Jan 2025</span>
+            </div>
+            <div class="mh-row">
+              <span class="mh-old">Hair appointment ready</span>
+              <span class="mh-date">Changed Jun 2024</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(name, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.querySelectorAll('.tc').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('tab-' + name).classList.add('on');
+}
+function toggleExp(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+</script>

@@ -1,0 +1,102 @@
+
+<style>
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 10px; }
+.card-label { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; margin: 0 0 12px; }
+.state-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+.av-gray   { background: #F1EFE8; color: #444441; }
+.av-amber  { background: #FAEEDA; color: #633806; }
+.av-coral  { background: #FAECE7; color: #712B13; }
+.av-teal   { background: #E1F5EE; color: #085041; }
+.av-purple { background: #EEEDFE; color: #3C3489; }
+.bubble { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 8px 12px; flex: 1; }
+.bubble-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 3px; }
+.bubble-sub { font-size: 12px; color: var(--color-text-secondary); margin: 0 0 4px; }
+.bubble-meta { font-size: 11px; color: var(--color-text-tertiary); margin: 0; }
+.feedback-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 99px; margin-top: 6px; }
+.pill-sent    { background: #F1EFE8; color: #5F5E5A; }
+.pill-queued  { background: #FAEEDA; color: #633806; }
+.pill-failed  { background: #FAECE7; color: #712B13; }
+.pill-got     { background: #E1F5EE; color: #085041; }
+.pill-dnd     { background: #EEEDFE; color: #3C3489; }
+.dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.dot-gray   { background: #888780; }
+.dot-amber  { background: #BA7517; }
+.dot-red    { background: #E24B4A; }
+.dot-green  { background: #1D9E75; }
+.dot-purple { background: #7F77DD; }
+.rule { font-size: 12px; color: var(--color-text-secondary); border-left: 2px solid var(--color-border-secondary); padding-left: 10px; margin: 10px 0 0; border-radius: 0; }
+.divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 4px 0 10px; }
+</style>
+
+<h2 class="sr-only">Offline signal states — what feedback the sender receives when receiver is unreachable</h2>
+
+<div class="card">
+  <p class="card-label" style="color:var(--color-text-tertiary)">state 1 — no internet, phone on</p>
+  <div class="state-row">
+    <div class="avatar av-amber">RX</div>
+    <div class="bubble">
+      <p class="bubble-title">Receiver has no data / wifi</p>
+      <p class="bubble-sub">Phone is on, app cannot be reached in real time</p>
+      <span class="feedback-pill pill-queued"><span class="dot dot-amber"></span>signal queued</span>
+      <p class="bubble-meta" style="margin-top:6px">Delivered the moment they reconnect. Sender sees "queued" tick — one faint tick, like SMS pending.</p>
+    </div>
+  </div>
+  <p class="rule">Sender knows: sent but not yet delivered. Not a failure — just waiting.</p>
+</div>
+
+<div class="card">
+  <p class="card-label" style="color:var(--color-text-tertiary)">state 2 — phone off or unreachable</p>
+  <div class="state-row">
+    <div class="avatar av-coral">RX</div>
+    <div class="bubble">
+      <p class="bubble-title">Phone switched off or out of coverage</p>
+      <p class="bubble-sub">Signal cannot be queued at device level</p>
+      <span class="feedback-pill pill-failed"><span class="dot dot-red"></span>signal held — phone unreachable</span>
+      <p class="bubble-meta" style="margin-top:6px">Server holds the signal. Delivered on first reconnect. Sender sees hollow tick with timestamp of when it was held.</p>
+    </div>
+  </div>
+  <p class="rule">Sender knows: not reached yet, but will be — with time context so they can decide whether to escalate.</p>
+</div>
+
+<div class="card">
+  <p class="card-label" style="color:var(--color-text-tertiary)">state 3 — do not disturb / focus mode</p>
+  <div class="state-row">
+    <div class="avatar av-purple">RX</div>
+    <div class="bubble">
+      <p class="bubble-title">Receiver has DND or focus active</p>
+      <p class="bubble-sub">Phone reachable but notifications suppressed</p>
+      <span class="feedback-pill pill-dnd"><span class="dot dot-purple"></span>signal held — DND active</span>
+      <p class="bubble-meta" style="margin-top:6px">Sender sees DND icon + estimated window end if receiver has shared their schedule. Signal queues for when DND lifts.</p>
+    </div>
+  </div>
+  <p class="rule">Sender knows: they're reachable but unavailable. Gives context so the sender respects the boundary.</p>
+</div>
+
+<div class="card">
+  <p class="card-label" style="color:var(--color-text-tertiary)">state 4 — signal expires</p>
+  <div class="state-row">
+    <div class="avatar av-gray">RX</div>
+    <div class="bubble">
+      <p class="bubble-title">Signal held too long — context window closes</p>
+      <p class="bubble-sub">e.g. "come fix my hair" is irrelevant after 3 hours</p>
+      <span class="feedback-pill pill-failed"><span class="dot dot-red"></span>signal expired</span>
+      <p class="bubble-meta" style="margin-top:6px">Each signal relationship has a configurable expiry window. Past that window, the signal is voided — not delivered. Sender gets an expiry notice.</p>
+    </div>
+  </div>
+  <p class="rule">This is critical. Delivering a stale "come now" hours later causes confusion. Context-expiry is a first-class feature, not an afterthought.</p>
+</div>
+
+<div class="card">
+  <p class="card-label" style="color:var(--color-text-tertiary)">state 5 — delivered, no reply</p>
+  <div class="state-row">
+    <div class="avatar av-teal">RX</div>
+    <div class="bubble">
+      <p class="bubble-title">Signal delivered, receiver went silent</p>
+      <p class="bubble-sub">Seen but no got-it or decline within reply window</p>
+      <span class="feedback-pill pill-got"><span class="dot dot-green"></span>delivered — awaiting reply</span>
+      <p class="bubble-meta" style="margin-top:6px">After a configurable reply window (e.g. 5 mins), sender gets a "no reply" nudge. Option to re-ping or escalate — one tap.</p>
+    </div>
+  </div>
+  <p class="rule">Silence is not the same as offline. The sender deserves to know the difference.</p>
+</div>
