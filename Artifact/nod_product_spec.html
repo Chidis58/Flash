@@ -1,0 +1,528 @@
+
+<style>
+* { box-sizing: border-box; }
+.wrap { padding: 4px 0; font-family: var(--font-sans); }
+
+.doc-header { padding: 20px 0 16px; border-bottom: 0.5px solid var(--color-border-tertiary); margin-bottom: 16px; }
+.doc-title { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 4px; }
+.doc-sub { font-size: 13px; color: var(--color-text-secondary); margin: 0 0 12px; }
+.doc-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+.meta-chip { font-size: 10px; font-weight: 500; padding: 3px 10px; border-radius: 99px; }
+.mc-status  { background: #E1F5EE; color: #085041; }
+.mc-phase   { background: #FAEEDA; color: #633806; }
+.mc-version { background: #EEEDFE; color: #3C3489; }
+
+.section { margin-bottom: 20px; }
+.section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; cursor: pointer; padding: 8px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.section-num  { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); min-width: 20px; }
+.section-title{ font-size: 14px; font-weight: 500; color: var(--color-text-primary); flex: 1; }
+.section-tag  { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 99px; }
+.st-core   { background: var(--color-background-secondary); color: var(--color-text-secondary); }
+.st-ui     { background: #E6F1FB; color: #0C447C; }
+.st-hw     { background: #EEEDFE; color: #3C3489; }
+.st-logic  { background: #FAEEDA; color: #633806; }
+.st-trust  { background: #E1F5EE; color: #085041; }
+.chevron  { font-size: 12px; color: var(--color-text-tertiary); transition: transform .2s; }
+.chevron.open { transform: rotate(90deg); }
+.section-body { display: none; padding: 4px 0 8px; }
+.section-body.open { display: block; }
+
+.spec-row { display: flex; gap: 10px; align-items: flex-start; padding: 7px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.spec-row:last-child { border-bottom: none; }
+.spec-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+.sd-core   { background: #888780; }
+.sd-ui     { background: #378ADD; }
+.sd-hw     { background: #7F77DD; }
+.sd-logic  { background: #BA7517; }
+.sd-trust  { background: #1D9E75; }
+.spec-body { flex: 1; }
+.spec-feature { font-size: 12px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 2px; }
+.spec-detail  { font-size: 11px; color: var(--color-text-secondary); margin: 0; line-height: 1.5; }
+.spec-status  { font-size: 10px; font-weight: 500; margin-top: 3px; }
+.ss-p1 { color: #1D9E75; }
+.ss-p2 { color: #BA7517; }
+.ss-p3 { color: #7F77DD; }
+
+.table-wrap { overflow-x: auto; margin: 8px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 11px; }
+th { text-align: left; padding: 6px 8px; background: var(--color-background-secondary); color: var(--color-text-tertiary); font-weight: 500; font-size: 10px; text-transform: uppercase; letter-spacing: .04em; border-bottom: 0.5px solid var(--color-border-tertiary); }
+td { padding: 7px 8px; border-bottom: 0.5px solid var(--color-border-tertiary); color: var(--color-text-secondary); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+.td-feature { font-weight: 500; color: var(--color-text-primary); }
+.td-p1 { color: #1D9E75; font-weight: 500; }
+.td-p2 { color: #BA7517; font-weight: 500; }
+.td-p3 { color: #7F77DD; font-weight: 500; }
+
+.color-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0; }
+.color-chip { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--color-text-secondary); }
+.cc-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+.principle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0; }
+.principle-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 9px 11px; }
+.pc-title { font-size: 12px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 3px; }
+.pc-sub   { font-size: 11px; color: var(--color-text-secondary); margin: 0; line-height: 1.5; }
+
+.phase-strip { display: flex; gap: 0; margin: 8px 0; border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); overflow: hidden; }
+.phase-block { flex: 1; padding: 8px 10px; border-right: 0.5px solid var(--color-border-tertiary); }
+.phase-block:last-child { border-right: none; }
+.pb-num   { font-size: 10px; font-weight: 500; color: var(--color-text-tertiary); margin: 0 0 3px; }
+.pb-title { font-size: 11px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 3px; }
+.pb-items { font-size: 10px; color: var(--color-text-secondary); margin: 0; line-height: 1.6; }
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Nod — complete product specification document covering all features, states, flows and phases</h2>
+
+<div class="doc-header">
+  <p class="doc-title">Nod</p>
+  <p class="doc-sub">Signal communication protocol — full product specification</p>
+  <div class="doc-meta">
+    <span class="meta-chip mc-status">Concept complete</span>
+    <span class="meta-chip mc-phase">Phase 1 ready to build</span>
+    <span class="meta-chip mc-version">v0.1 — spec draft</span>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header" onclick="toggle('s0')">
+    <span class="section-num">0</span>
+    <span class="section-title">Core philosophy</span>
+    <span class="section-tag st-core">foundation</span>
+    <span class="chevron" id="ch-s0">›</span>
+  </div>
+  <div class="section-body" id="s0">
+    <div class="principle-grid">
+      <div class="principle-card">
+        <p class="pc-title">The ring is the message</p>
+        <p class="pc-sub">A ping carries zero content. Its meaning is entirely borrowed from the pre-established relationship between sender and receiver.</p>
+      </div>
+      <div class="principle-card">
+        <p class="pc-title">Zero social debt</p>
+        <p class="pc-sub">A ping is a transaction that closes itself. Got it — debt paid. Decline — debt respectfully refused. No lingering obligation.</p>
+      </div>
+      <div class="principle-card">
+        <p class="pc-title">Peripheral awareness</p>
+        <p class="pc-sub">Information lives in the environment. You perceive the state — you don't check it. Color and rhythm over banners and text.</p>
+      </div>
+      <div class="principle-card">
+        <p class="pc-title">Consent is mutual</p>
+        <p class="pc-sub">No relationship can be imposed unilaterally. Both parties agree to every meaning, timing parameter, and direction of authority.</p>
+      </div>
+      <div class="principle-card">
+        <p class="pc-title">The record is the referee</p>
+        <p class="pc-sub">Both sides hold an identical immutable copy of every session. Neither party can rewrite history or dispute a timestamp.</p>
+      </div>
+      <div class="principle-card">
+        <p class="pc-title">Protocol over escape hatch</p>
+        <p class="pc-sub">No early fallback to calls or messaging. Trust the protocol, train the users. The system enforces its own discipline.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header" onclick="toggle('s1')">
+    <span class="section-num">1</span>
+    <span class="section-title">Signal types</span>
+    <span class="section-tag st-core">core</span>
+    <span class="chevron" id="ch-s1">›</span>
+  </div>
+  <div class="section-body" id="s1">
+    <div class="table-wrap">
+      <table>
+        <tr><th>Property</th><th>Action signal</th><th>Warmth signal</th></tr>
+        <tr><td class="td-feature">Hierarchy</td><td>Superior → executor. Asymmetric by design.</td><td>Peer. Neither side leads.</td></tr>
+        <tr><td class="td-feature">Reply</td><td>Expected. Got it or decline.</td><td>Optional. Never required.</td></tr>
+        <tr><td class="td-feature">Session</td><td>Governed. Expiry, cooldown, escalation.</td><td>Sessionless. Lands and fades.</td></tr>
+        <tr><td class="td-feature">Escalation</td><td>Up to 4 pings. Color deepens each re-ping.</td><td>One ping only. Never re-pinged.</td></tr>
+        <tr><td class="td-feature">History</td><td>Full immutable log. Both sides. Timestamps to the second.</td><td>Count only. No timestamps.</td></tr>
+        <tr><td class="td-feature">Orb palette</td><td>Gray → amber → red → crimson.</td><td>Purple, pink, teal, blue. Soft only.</td></tr>
+        <tr><td class="td-feature">Reverse ping</td><td>Executor → superior is always a question, never a command.</td><td>Either direction. Same meaning both ways.</td></tr>
+        <tr><td class="td-feature">DND override</td><td>Mutual opt-in. Configurable from ping 3+.</td><td>Never. Warmth never overrides DND.</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header" onclick="toggle('s2')">
+    <span class="section-num">2</span>
+    <span class="section-title">Signal lifecycle — action</span>
+    <span class="section-tag st-logic">logic</span>
+    <span class="chevron" id="ch-s2">›</span>
+  </div>
+  <div class="section-body" id="s2">
+    <div class="spec-row">
+      <div class="spec-dot sd-logic"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Ping 1 — normal</p>
+        <p class="spec-detail">Single short haptic burst. 3-second full-screen takeover with expanding ripple rings. Collapses to ambient mini Orb after timer expires. Neutral gray Orb color. No DND override.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-logic"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Ping 2 — noticed</p>
+        <p class="spec-detail">Longer haptic pattern. Full-screen takeover again. Amber Orb. Receiver sees this is a follow-up, not first contact. Gap between pings logged in session timeline.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-logic"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Ping 3 — urgent</p>
+        <p class="spec-detail">Double pulse haptic. Full-screen. Red Orb. DP shakes subtly on receiver screen — urgency cue without text. DND override fires if mutually enabled. Face animation communicates "third time" before any reading.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-logic"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Ping 4 — critical</p>
+        <p class="spec-detail">Triple pulse. Full-screen. Crimson Orb. White jolt flash before crimson if DND override active. Session seals after this ping regardless of reply. Sender locked. Cooldown begins.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-logic"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Session close conditions</p>
+        <p class="spec-detail">Got it reply · Decline reply · Signal expiry · Ping 4 reached with no reply (critical seal) · Sender manually cancels before delivery. Each writes to history in its respective color.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-logic"></div>
+      <div class="spec-body">
+        <p class="spec-feature">New session after critical</p>
+        <p class="spec-detail">Cooldown window enforced by system. When it lifts, sender can open a new session. Neutral color. No carry-over of previous escalation. Old session stays in history permanently — never deletable.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header" onclick="toggle('s3')">
+    <span class="section-num">3</span>
+    <span class="section-title">Offline and unreachable states</span>
+    <span class="section-tag st-logic">logic</span>
+    <span class="chevron" id="ch-s3">›</span>
+  </div>
+  <div class="section-body" id="s3">
+    <div class="table-wrap">
+      <table>
+        <tr><th>State</th><th>Condition</th><th>Sender sees</th><th>Expiry timer</th></tr>
+        <tr><td class="td-feature">Queued</td><td>No data / wifi. Phone on.</td><td>Single faint tick. "Signal queued."</td><td>Paused until delivery.</td></tr>
+        <tr><td class="td-feature">Held</td><td>Phone off or out of coverage.</td><td>Hollow tick + timestamp held.</td><td>Paused until delivery.</td></tr>
+        <tr><td class="td-feature">DND active</td><td>Receiver in focus mode.</td><td>DND icon + estimated window end.</td><td>Running. Ping waits.</td></tr>
+        <tr><td class="td-feature">Expired</td><td>Context window closed before delivery.</td><td>Expiry notice. Session void.</td><td>Triggered expiry.</td></tr>
+        <tr><td class="td-feature">No reply</td><td>Delivered. Reply window elapsed.</td><td>"No reply" state. Re-ping option.</td><td>Running normally.</td></tr>
+        <tr><td class="td-feature">Cancelled</td><td>Sender pulls back before delivery.</td><td>Session voided silently.</td><td>Terminated.</td></tr>
+      </table>
+    </div>
+    <p style="font-size:11px;color:var(--color-text-tertiary);margin:8px 0 0">Expiry timer always starts from delivery time, never send time. A queued signal is never penalised for the receiver's offline period.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header" onclick="toggle('s4')">
+    <span class="section-num">4</span>
+    <span class="section-title">Relationship setup flow</span>
+    <span class="section-tag st-core">core</span>
+    <span class="chevron" id="ch-s4">›</span>
+  </div>
+  <div class="section-body" id="s4">
+    <div class="spec-row">
+      <div class="spec-dot sd-core"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Step 1 — Who</p>
+        <p class="spec-detail">Search existing users by name or @username. Or send a setup link to someone not yet on the app. Link pre-fills sender's proposed settings so receiver doesn't start from blank.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-core"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Step 2 — Signal type fork</p>
+        <p class="spec-detail">Action or warmth. Everything downstream changes. Action path = 5 steps. Warmth path = 2 steps. Both can coexist between the same two people as separate relationships.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-core"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Step 3A — Roles and meanings (action)</p>
+        <p class="spec-detail">Relationship type preset or custom. Superior role and executor role defined. Directional meaning set for each side. Executor's return ping is always a question, never a command — enforced by label in UI.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-core"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Step 3W — Shared meaning (warmth)</p>
+        <p class="spec-detail">One meaning, both directions. No role labels. Palette color selection — purple, pink, teal, blue. Amber and red unavailable — those colors are owned by action signals.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-core"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Step 4A — Session behaviour (action)</p>
+        <p class="spec-detail">Signal expiry · Reply window · Cooldown after ping 4 · DND override threshold (mutual opt-in only) · Max pings per day. All configurable per relationship, not global.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-core"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Step 4W — Soft limits (warmth)</p>
+        <p class="spec-detail">Daily soft limit (default 3). Fade without reply toggle. Soft history toggle (count only). No expiry. No cooldown. No escalation settings — these concepts don't exist for warmth.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-core"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Step 5 — Confirm, send, negotiate</p>
+        <p class="spec-detail">Full summary shown to sender before sending. Receiver sees all proposed settings with inline edit pills on any field they disagree with. Negotiate sends a counter-proposal. Accept locks the relationship live. Both sides must agree the same version — no unilateral activation.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header" onclick="toggle('s5')">
+    <span class="section-num">5</span>
+    <span class="section-title">Incoming ping UI</span>
+    <span class="section-tag st-ui">interface</span>
+    <span class="chevron" id="ch-s5">›</span>
+  </div>
+  <div class="section-body" id="s5">
+    <div class="spec-row">
+      <div class="spec-dot sd-ui"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Full-screen takeover — 3 seconds</p>
+        <p class="spec-detail">Dark full screen. Radial glow background matching session color. Large Orb with expanding ripple rings as the "ringing" visual. DP centered and breathing. Sender name and predefined message above. Timer bar draining at bottom. Got it and decline below.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-ui"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Collapse to ambient — after 3 seconds</p>
+        <p class="spec-detail">Full-screen shrinks to mini Orb and joins the live stack. Persistent amber banner at top of screen with contact name and one-tap reply access. Mini Orb continues breathing in session color. Nothing is lost — ping is still active and waiting.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-ui"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Re-ping takeover difference</p>
+        <p class="spec-detail">Same 3-second full-screen but ping count shown as color — amber for ping 2, red for ping 3, crimson for ping 4. DP shakes subtly on ping 3+. No digit shown — color alone carries the count.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-ui"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Warmth ping difference</p>
+        <p class="spec-detail">Soft purple/pink/teal glow instead of amber. Decline replaced with "Later" — no rejection language. "Felt" replaces "Got it" — warmer vocabulary. No timer pressure feeling — bar drains more gently.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-ui"></div>
+      <div class="spec-body">
+        <p class="spec-feature">In-pocket gesture response</p>
+        <p class="spec-detail">Single back-tap = got it. Double back-tap = decline. Uses native iOS back-tap accessibility API and Android squeeze gesture. Haptic breath every 2 minutes while session is active — passive awareness without demanding attention.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header" onclick="toggle('s6')">
+    <span class="section-num">6</span>
+    <span class="section-title">Sender status screen</span>
+    <span class="section-tag st-ui">interface</span>
+    <span class="chevron" id="ch-s6">›</span>
+  </div>
+  <div class="section-body" id="s6">
+    <div class="spec-row">
+      <div class="spec-dot sd-ui"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Live tab</p>
+        <p class="spec-detail">Summary strip — got it / waiting / queued / critical counts. Active sessions list with mini Orbs, escalation dot clusters, and outcome labels. Acknowledged today section below active. Tap any item to open session detail.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-ui"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Session detail screen</p>
+        <p class="spec-detail">Contact name and role. Signal intent displayed. Full ping timeline with timestamps to the second. Gap between pings shown in italic. Expiry progress bar live. Re-ping button active or locked depending on state. Cooldown countdown when locked.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-ui"></div>
+      <div class="spec-body">
+        <p class="spec-feature">History tab</p>
+        <p class="spec-detail">Chronological list grouped by month. Color bar on left of each entry. Tap to expand full session ping timeline with gap notes. Immutable — no deletion. Both sender and receiver hold identical copies.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-ui"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Received tab</p>
+        <p class="spec-detail">Pings sent to the user as receiver. Their reply record. Timestamps immutable. This is the tab that protects the receiver from false accusations. Reply timestamps shown to the second.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header" onclick="toggle('s7')">
+    <span class="section-num">7</span>
+    <span class="section-title">Relationship history view</span>
+    <span class="section-tag st-trust">trust</span>
+    <span class="chevron" id="ch-s7">›</span>
+  </div>
+  <div class="section-body" id="s7">
+    <div class="spec-row">
+      <div class="spec-dot sd-trust"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Timeline tab</p>
+        <p class="spec-detail">Full session history since inception. Grouped by month. Color bar per session. Tap to expand. Each expanded view shows full ping-by-ping breakdown with gap between pings in italic. Seconds-level timestamps on all events.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-trust"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Stats tab</p>
+        <p class="spec-detail">Got it / declined / expired / critical totals. Response rate bar chart by month. Relationship health visible at a glance without any editorial commentary — just the numbers.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-trust"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Meanings tab</p>
+        <p class="spec-detail">Current active meanings with effective dates. Full meaning change history with previous wording and change date. Solves handshake drift — neither party can dispute what the ping meant at any point in time.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-trust"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Ping-back count</p>
+        <p class="spec-detail">Private count of sessions that went unanswered and were marked as ignored. Visible only to sender against that specific relationship. Not punitive — informational. Tells the sender: this person has a pattern.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header" onclick="toggle('s8')">
+    <span class="section-num">8</span>
+    <span class="section-title">Orb and ambient interface</span>
+    <span class="section-tag st-hw">ambient</span>
+    <span class="chevron" id="ch-s8">›</span>
+  </div>
+  <div class="section-body" id="s8">
+    <div class="color-row">
+      <div class="color-chip"><div class="cc-dot" style="background:#888780"></div>Queued — slow gray breath</div>
+      <div class="color-chip"><div class="cc-dot" style="background:#BA7517"></div>Waiting — amber glow</div>
+      <div class="color-chip"><div class="cc-dot" style="background:#E24B4A"></div>Ping 3 — red pulse</div>
+      <div class="color-chip"><div class="cc-dot" style="background:#791F1F"></div>Critical — rapid crimson</div>
+      <div class="color-chip"><div class="cc-dot" style="background:#1D9E75"></div>Got it — green flash</div>
+      <div class="color-chip"><div class="cc-dot" style="background:#7F77DD"></div>Warmth — soft purple</div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-hw"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Identity anchor — submerged DP</p>
+        <p class="spec-detail">Four layers: dynamic glow / frosted glass / identity ring / quiet DP. DP is static — only opacity and saturation shift with state. Grayscale at idle, full color when active, pulse ring at critical. Two-stage brain processing: peripheral = urgency color, focused = identity face. Under one second total.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-hw"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Zero-banner phone UI</p>
+        <p class="spec-detail">No slide-down notification banners. Always-on display shows blurred Orb glow in session color. Edge glow on lock screen visible from across a room. Dynamic Island carries live session dot persistently on iOS. Screen edges pulse softly while session active.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-hw"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Physical Orb — Phase 3</p>
+        <p class="spec-detail">Frosted glass desktop sphere. Bluetooth LE. Single tap = got it. Cover = decline. Flip = mute session. No buttons, no screen, no speakers. Observer pattern — receives STATE_UPDATE from app logic layer. Color and breathing pattern only interface.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-hw"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Enterprise Orb network — Phase 4</p>
+        <p class="spec-detail">Multiple Orbs on one network. Manager sees 12 Orbs on a surface — each one a crew member's live signal state. Ambient operations visibility. No screens, no dashboards, no checking. The room itself is the interface.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header" onclick="toggle('s9')">
+    <span class="section-num">9</span>
+    <span class="section-title">Contextual badges</span>
+    <span class="section-tag st-ui">interface</span>
+    <span class="chevron" id="ch-s9">›</span>
+  </div>
+  <div class="section-body" id="s9">
+    <div class="spec-row">
+      <div class="spec-dot sd-ui"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Allowed badge types</p>
+        <p class="spec-detail">Location pin · ETA (5 / 10 / 30 min) · Floor or room number · Urgency flag · Time slot. Maximum 3 badge types per relationship — configured at setup, not free-form.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-ui"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Never allowed</p>
+        <p class="spec-detail">Video · document · image · voice note · free text · link · emoji. Any attachment that can say something new — rather than sharpen the existing meaning — is messaging. That line holds permanently.</p>
+      </div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-dot sd-ui"></div>
+      <div class="spec-body">
+        <p class="spec-feature">Interaction</p>
+        <p class="spec-detail">Long-press on the ping button before sending opens the badge tray. Tap once to attach. One badge per ping maximum. Badge appears alongside the predefined message on receiver's full-screen takeover.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header" onclick="toggle('s10')">
+    <span class="section-num">10</span>
+    <span class="section-title">Product phase roadmap</span>
+    <span class="section-tag st-core">roadmap</span>
+    <span class="chevron" id="ch-s10">›</span>
+  </div>
+  <div class="section-body" id="s10">
+    <div class="phase-strip">
+      <div class="phase-block">
+        <p class="pb-num td-p1">Phase 1</p>
+        <p class="pb-title">Ship the protocol</p>
+        <p class="pb-items">Core ping engine · Relationship setup · Session lifecycle · Zero-banner UI · AOD Orb · Edge glow · Back-tap gestures · Bilateral history · Sender status screen</p>
+      </div>
+      <div class="phase-block">
+        <p class="pb-num td-p2">Phase 2</p>
+        <p class="pb-title">Deep OS integration</p>
+        <p class="pb-items">Dynamic Island live session · Apple Watch complication · Android Wear · Contextual badges · Warmth signal class · Meaning negotiation flow</p>
+      </div>
+      <div class="phase-block">
+        <p class="pb-num td-p3">Phase 3</p>
+        <p class="pb-title">Physical Orb</p>
+        <p class="pb-items">Frosted glass hardware · Bluetooth LE · Tap and cover gestures · Professional environments · Clinic / pharmacy / site office launch</p>
+      </div>
+      <div class="phase-block">
+        <p class="pb-num" style="color:#888780">Phase 4</p>
+        <p class="pb-title">Enterprise network</p>
+        <p class="pb-items">Multi-Orb network · Fleet and logistics · Healthcare ward layer · B2B infrastructure product · API for third-party integrations</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+function toggle(id) {
+  const body = document.getElementById(id);
+  const ch = document.getElementById('ch-' + id);
+  body.classList.toggle('open');
+  ch.classList.toggle('open');
+}
+</script>

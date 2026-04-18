@@ -1,0 +1,290 @@
+
+<style>
+* { box-sizing: border-box; }
+.phone-frame { max-width: 320px; margin: 0 auto; background: var(--color-background-secondary); border-radius: 32px; padding: 16px 12px 24px; border: 0.5px solid var(--color-border-secondary); }
+.status-bar { display: flex; justify-content: space-between; padding: 0 6px 12px; }
+.status-time { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); }
+.screen { background: var(--color-background-primary); border-radius: 20px; overflow: hidden; min-height: 560px; display: flex; flex-direction: column; }
+
+.nav-bar { display: flex; align-items: center; gap: 10px; padding: 14px 14px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); flex-shrink: 0; }
+.back-btn { font-size: 12px; color: var(--color-text-secondary); cursor: pointer; padding: 4px 8px; border-radius: var(--border-radius-md); background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); }
+.nav-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); flex: 1; }
+
+.progress-bar { display: flex; gap: 4px; padding: 10px 14px 0; flex-shrink: 0; }
+.prog-seg { flex: 1; height: 3px; border-radius: 2px; background: var(--color-border-tertiary); transition: background 0.3s; }
+.prog-seg.done { background: #1D9E75; }
+.prog-seg.active { background: #BA7517; }
+
+.step { display: none; flex: 1; flex-direction: column; padding: 16px 14px; }
+.step.active { display: flex; }
+
+.step-num { font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-tertiary); margin: 0 0 4px; }
+.step-title { font-size: 16px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 4px; }
+.step-sub { font-size: 12px; color: var(--color-text-secondary); margin: 0 0 18px; line-height: 1.5; }
+
+.field-label { font-size: 11px; font-weight: 500; color: var(--color-text-secondary); margin: 0 0 5px; text-transform: uppercase; letter-spacing: 0.04em; }
+.field-input { width: 100%; padding: 9px 12px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-primary); margin-bottom: 14px; font-family: var(--font-sans); outline: none; }
+.field-input:focus { border-color: var(--color-border-primary); }
+
+.role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 14px; }
+.role-chip { padding: 10px 10px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); background: var(--color-background-secondary); font-size: 12px; font-weight: 500; color: var(--color-text-secondary); cursor: pointer; text-align: center; transition: all 0.15s; }
+.role-chip:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+.role-chip.selected { background: #E1F5EE; color: #085041; border-color: #1D9E75; }
+
+.direction-block { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 12px 14px; margin-bottom: 10px; }
+.dir-label { font-size: 10px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-text-tertiary); margin: 0 0 6px; }
+.dir-who { font-size: 12px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 3px; }
+.dir-arrow { font-size: 11px; color: var(--color-text-tertiary); margin: 0 0 6px; }
+.dir-msg { width: 100%; padding: 8px 10px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); font-size: 12px; color: var(--color-text-primary); font-family: var(--font-sans); outline: none; }
+.dir-msg:focus { border-color: #1D9E75; }
+.dir-hint { font-size: 10px; color: var(--color-text-tertiary); margin: 4px 0 0; }
+
+.settings-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.settings-row:last-child { border-bottom: none; }
+.set-left { flex: 1; }
+.set-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 1px; }
+.set-sub  { font-size: 11px; color: var(--color-text-secondary); margin: 0; }
+.set-val  { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); cursor: pointer; padding: 4px 10px; border-radius: var(--border-radius-md); background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); }
+
+.invite-block { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 14px; margin-bottom: 14px; text-align: center; }
+.inv-avatar-row { display: flex; justify-content: center; align-items: center; gap: 0; margin-bottom: 10px; }
+.inv-av { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; border: 2px solid var(--color-background-primary); }
+.inv-av-me   { background: #E1F5EE; color: #085041; margin-right: -8px; z-index: 2; }
+.inv-av-them { background: #EEEDFE; color: #3C3489; z-index: 1; }
+.inv-names { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 3px; }
+.inv-sub   { font-size: 11px; color: var(--color-text-secondary); margin: 0 0 12px; }
+.inv-link  { font-size: 11px; font-family: var(--font-mono); background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 6px 10px; color: var(--color-text-secondary); display: block; margin-bottom: 8px; }
+.inv-share-row { display: flex; gap: 6px; }
+.inv-share-btn { flex: 1; font-size: 11px; font-weight: 500; padding: 7px 6px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-secondary); cursor: pointer; text-align: center; }
+
+.confirm-block { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 12px 14px; margin-bottom: 12px; }
+.conf-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 6px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.conf-row:last-child { border-bottom: none; }
+.conf-key { font-size: 11px; color: var(--color-text-tertiary); margin: 0; }
+.conf-val { font-size: 12px; font-weight: 500; color: var(--color-text-primary); margin: 0; text-align: right; max-width: 60%; }
+
+.bottom-btn { margin-top: auto; padding-top: 12px; }
+.primary-btn { width: 100%; padding: 12px; border-radius: var(--border-radius-lg); border: none; font-size: 14px; font-weight: 500; cursor: pointer; background: var(--color-text-primary); color: var(--color-background-primary); }
+.primary-btn:active { opacity: 0.8; }
+.secondary-btn { width: 100%; padding: 10px; border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-secondary); font-size: 13px; font-weight: 500; cursor: pointer; background: transparent; color: var(--color-text-secondary); margin-top: 8px; }
+
+.step-counter { font-size: 11px; color: var(--color-text-tertiary); text-align: right; margin-bottom: 12px; }
+</style>
+
+<h2 class="sr-only">Relationship setup flow — five steps to configure a signal relationship between two people</h2>
+
+<div class="phone-frame">
+  <div class="status-bar"><span class="status-time">9:41</span></div>
+  <div class="screen">
+
+    <div class="nav-bar">
+      <button class="back-btn" id="back-btn" onclick="prevStep()">← back</button>
+      <span class="nav-title" id="nav-title">New relationship</span>
+    </div>
+
+    <div class="progress-bar">
+      <div class="prog-seg active" id="seg-0"></div>
+      <div class="prog-seg" id="seg-1"></div>
+      <div class="prog-seg" id="seg-2"></div>
+      <div class="prog-seg" id="seg-3"></div>
+      <div class="prog-seg" id="seg-4"></div>
+    </div>
+
+    <div class="step active" id="step-0">
+      <p class="step-num">Step 1 of 5</p>
+      <p class="step-title">Who are you connecting?</p>
+      <p class="step-sub">Search for someone already on the app, or invite them to join.</p>
+      <p class="field-label">Their name or username</p>
+      <input class="field-input" placeholder="Search by name or @username" />
+      <p class="field-label">Or invite by contact</p>
+      <div class="invite-block">
+        <div class="inv-avatar-row">
+          <div class="inv-av inv-av-me">ME</div>
+          <div class="inv-av inv-av-them">?</div>
+        </div>
+        <p class="inv-names">You + Amaka Osei</p>
+        <p class="inv-sub">Amaka isn't on the app yet. Send her a setup link — she'll configure her side when she joins.</p>
+        <span class="inv-link">nod.app/setup/xK9mT2</span>
+        <div class="inv-share-row">
+          <div class="inv-share-btn">WhatsApp</div>
+          <div class="inv-share-btn">SMS</div>
+          <div class="inv-share-btn">Copy link</div>
+        </div>
+      </div>
+      <div class="bottom-btn">
+        <button class="primary-btn" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <div class="step" id="step-1">
+      <p class="step-num">Step 2 of 5</p>
+      <p class="step-title">What is this relationship?</p>
+      <p class="step-sub">Pick the dynamic that best describes how you two work together. This shapes the default ping direction.</p>
+      <div class="role-grid">
+        <div class="role-chip selected" onclick="selectRole(this)">Superior → Staff</div>
+        <div class="role-chip" onclick="selectRole(this)">Client → Provider</div>
+        <div class="role-chip" onclick="selectRole(this)">Doctor → Nurse</div>
+        <div class="role-chip" onclick="selectRole(this)">Manager → Driver</div>
+        <div class="role-chip" onclick="selectRole(this)">Foreman → Crew</div>
+        <div class="role-chip" onclick="selectRole(this)">Custom</div>
+      </div>
+      <p class="field-label">Your role in this relationship</p>
+      <input class="field-input" value="Manager" />
+      <p class="field-label">Their role</p>
+      <input class="field-input" value="Staff" />
+      <div class="bottom-btn">
+        <button class="primary-btn" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <div class="step" id="step-2">
+      <p class="step-num">Step 3 of 5</p>
+      <p class="step-title">Define the ping meanings</p>
+      <p class="step-sub">Set what each direction means. These are the predefined messages — no words ever need to be typed again.</p>
+
+      <div class="direction-block">
+        <p class="dir-label">When you ping them</p>
+        <p class="dir-who">You → Amaka</p>
+        <p class="dir-arrow">your ping means →</p>
+        <input class="dir-msg" value="Come and fix my hair" />
+        <p class="dir-hint">Keep it short. One action. One meaning.</p>
+      </div>
+
+      <div class="direction-block">
+        <p class="dir-label">When they ping you back</p>
+        <p class="dir-who">Amaka → You</p>
+        <p class="dir-arrow">their ping means →</p>
+        <input class="dir-msg" value="Can I come and do your hair?" />
+        <p class="dir-hint">This is their request direction — always a question, never a command.</p>
+      </div>
+
+      <div class="bottom-btn">
+        <button class="primary-btn" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <div class="step" id="step-3">
+      <p class="step-num">Step 4 of 5</p>
+      <p class="step-title">Session behaviour</p>
+      <p class="step-sub">Configure how this specific relationship handles timing. Different relationships need different urgency windows.</p>
+
+      <div>
+        <div class="settings-row">
+          <div class="set-left">
+            <p class="set-name">Signal expiry</p>
+            <p class="set-sub">How long before an undelivered signal voids</p>
+          </div>
+          <span class="set-val">2 hours</span>
+        </div>
+        <div class="settings-row">
+          <div class="set-left">
+            <p class="set-name">Reply window</p>
+            <p class="set-sub">Time before "no reply" state triggers</p>
+          </div>
+          <span class="set-val">10 min</span>
+        </div>
+        <div class="settings-row">
+          <div class="set-left">
+            <p class="set-name">Cooldown after ping 4</p>
+            <p class="set-sub">Lock duration before new session opens</p>
+          </div>
+          <span class="set-val">1 hour</span>
+        </div>
+        <div class="settings-row">
+          <div class="set-left">
+            <p class="set-name">DND override</p>
+            <p class="set-sub">Allow ping 3+ to break through DND</p>
+          </div>
+          <span class="set-val">Ping 3+</span>
+        </div>
+        <div class="settings-row">
+          <div class="set-left">
+            <p class="set-name">Max pings per day</p>
+            <p class="set-sub">Cap on sessions opened in 24 hours</p>
+          </div>
+          <span class="set-val">5</span>
+        </div>
+      </div>
+
+      <div class="bottom-btn">
+        <button class="primary-btn" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <div class="step" id="step-4">
+      <p class="step-num">Step 5 of 5</p>
+      <p class="step-title">Confirm and send</p>
+      <p class="step-sub">Review the relationship before sending Amaka the setup request. She confirms her side — then you're both live.</p>
+
+      <div class="confirm-block">
+        <div class="conf-row">
+          <p class="conf-key">With</p>
+          <p class="conf-val">Amaka Osei</p>
+        </div>
+        <div class="conf-row">
+          <p class="conf-key">Relationship</p>
+          <p class="conf-val">Client → Provider</p>
+        </div>
+        <div class="conf-row">
+          <p class="conf-key">Your ping means</p>
+          <p class="conf-val">Come and fix my hair</p>
+        </div>
+        <div class="conf-row">
+          <p class="conf-key">Their ping means</p>
+          <p class="conf-val">Can I come and do your hair?</p>
+        </div>
+        <div class="conf-row">
+          <p class="conf-key">Expiry</p>
+          <p class="conf-val">2 hours</p>
+        </div>
+        <div class="conf-row">
+          <p class="conf-key">Reply window</p>
+          <p class="conf-val">10 min</p>
+        </div>
+        <div class="conf-row">
+          <p class="conf-key">Cooldown</p>
+          <p class="conf-val">1 hour after ping 4</p>
+        </div>
+      </div>
+
+      <div class="bottom-btn">
+        <button class="primary-btn" onclick="sendPrompt('What happens after the setup request is sent to Amaka — how does she confirm her side?')">Send setup request to Amaka ↗</button>
+        <button class="secondary-btn" onclick="prevStep()">Edit details</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let current = 0;
+const titles = ['New relationship', 'Relationship type', 'Ping meanings', 'Session settings', 'Confirm setup'];
+
+function nextStep() {
+  if (current >= 4) return;
+  document.getElementById('step-' + current).classList.remove('active');
+  document.getElementById('seg-' + current).classList.remove('active');
+  document.getElementById('seg-' + current).classList.add('done');
+  current++;
+  document.getElementById('step-' + current).classList.add('active');
+  document.getElementById('seg-' + current).classList.add('active');
+  document.getElementById('nav-title').textContent = titles[current];
+  document.getElementById('back-btn').style.visibility = current === 0 ? 'hidden' : 'visible';
+}
+
+function prevStep() {
+  if (current <= 0) return;
+  document.getElementById('step-' + current).classList.remove('active');
+  document.getElementById('seg-' + current).classList.remove('active');
+  current--;
+  document.getElementById('step-' + current).classList.add('active');
+  document.getElementById('seg-' + current).classList.remove('done');
+  document.getElementById('seg-' + current).classList.add('active');
+  document.getElementById('nav-title').textContent = titles[current];
+}
+
+function selectRole(el) {
+  document.querySelectorAll('.role-chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+</script>

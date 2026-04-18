@@ -1,0 +1,190 @@
+
+<style>
+* { box-sizing: border-box; }
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 10px; }
+.card-label { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-tertiary); margin: 0 0 12px; }
+.rule { font-size: 12px; color: var(--color-text-secondary); border-left: 2px solid var(--color-border-secondary); padding-left: 10px; margin: 12px 0 0; line-height: 1.6; }
+.divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 4px 0 12px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.col-block { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; }
+.col-title { font-size: 11px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 6px; }
+.col-sub { font-size: 11px; color: var(--color-text-secondary); margin: 0; line-height: 1.5; }
+
+@keyframes breathe-gray   { 0%,100%{opacity:.3} 50%{opacity:.7} }
+@keyframes breathe-amber  { 0%,100%{opacity:.5} 50%{opacity:1}  }
+@keyframes pulse-red      { 0%,100%{opacity:.6;transform:scale(1)}   50%{opacity:1;transform:scale(1.08)} }
+@keyframes pulse-crimson  { 0%,100%{opacity:.7;transform:scale(1)}   25%{opacity:1;transform:scale(1.12)} 75%{opacity:.8;transform:scale(1.06)} }
+@keyframes flash-green    { 0%{opacity:0} 20%{opacity:1} 50%{opacity:.8} 80%{opacity:1} 100%{opacity:0} }
+@keyframes jolt           { 0%{opacity:0} 10%{opacity:1;background:#fff} 30%{background:#791F1F;opacity:1} 100%{opacity:.9;background:#791F1F} }
+@keyframes edge-pulse     { 0%,100%{opacity:.15} 50%{opacity:.45} }
+@keyframes screen-breathe { 0%,100%{opacity:.08} 50%{opacity:.22} }
+
+.orb-demo { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin: 4px 0 12px; }
+.orb-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.orb { width: 52px; height: 52px; border-radius: 50%; }
+.orb-idle    { background: var(--color-border-tertiary); opacity: .4; }
+.orb-queued  { background: #888780; animation: breathe-gray 3s ease-in-out infinite; }
+.orb-waiting { background: #BA7517; animation: breathe-amber 2s ease-in-out infinite; }
+.orb-urgent  { background: #E24B4A; animation: pulse-red 1.2s ease-in-out infinite; }
+.orb-critical{ background: #791F1F; animation: pulse-crimson .7s ease-in-out infinite; }
+.orb-got     { background: #1D9E75; animation: flash-green 2s ease-in-out forwards; }
+.orb-jolt    { background: #791F1F; animation: jolt .6s ease-out forwards; }
+.orb-label   { font-size: 10px; color: var(--color-text-tertiary); text-align: center; max-width: 60px; line-height: 1.4; }
+
+.phone-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 4px 0 12px; }
+.phone-mini { width: 110px; background: var(--color-background-secondary); border-radius: 18px; padding: 8px 6px 12px; border: 0.5px solid var(--color-border-secondary); display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.phone-mini-label { font-size: 10px; color: var(--color-text-tertiary); text-align: center; line-height: 1.4; }
+.phone-screen { width: 90px; height: 140px; background: #111; border-radius: 10px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+
+.aod-orb { width: 44px; height: 44px; border-radius: 50%; filter: blur(8px); }
+.aod-amber  { background: #BA7517; animation: breathe-amber 2s ease-in-out infinite; }
+.aod-crimson{ background: #791F1F; animation: pulse-crimson .7s ease-in-out infinite; }
+.aod-green  { background: #1D9E75; animation: flash-green 2.5s ease-in-out infinite; }
+
+.edge-glow { position: absolute; inset: 0; border-radius: 10px; pointer-events: none; }
+.edge-amber  { box-shadow: inset 0 0 12px 3px rgba(186,117,23,.6); animation: edge-pulse 2s ease-in-out infinite; }
+.edge-crimson{ box-shadow: inset 0 0 16px 4px rgba(121,31,31,.9); animation: edge-pulse .7s ease-in-out infinite; }
+
+.di-bar { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); background: #222; border-radius: 99px; padding: 3px 10px; display: flex; align-items: center; gap: 5px; }
+.di-dot { width: 7px; height: 7px; border-radius: 50%; }
+.di-amber  { background: #BA7517; animation: breathe-amber 2s ease-in-out infinite; }
+.di-crimson{ background: #791F1F; animation: pulse-crimson .7s ease-in-out infinite; }
+.di-text   { font-size: 8px; color: #aaa; }
+
+.screen-time { font-size: 18px; font-weight: 300; color: #fff; position: absolute; top: 28px; }
+.screen-date { font-size: 9px; color: #888; position: absolute; top: 52px; }
+
+.phase-row { display: flex; flex-direction: column; gap: 8px; }
+.phase-block { display: flex; gap: 12px; align-items: flex-start; padding: 10px 12px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); }
+.phase-num { font-size: 16px; font-weight: 500; color: var(--color-text-tertiary); min-width: 24px; flex-shrink: 0; }
+.phase-info { flex: 1; }
+.phase-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 2px; }
+.phase-sub   { font-size: 11px; color: var(--color-text-secondary); margin: 0; line-height: 1.5; }
+.phase-tag   { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 99px; margin-top: 5px; display: inline-block; }
+.pt-now  { background: #E1F5EE; color: #085041; }
+.pt-next { background: #FAEEDA; color: #633806; }
+.pt-fut  { background: #EEEDFE; color: #3C3489; }
+
+.gesture-block { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; margin-bottom: 8px; }
+.g-title { font-size: 12px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 2px; }
+.g-sub   { font-size: 11px; color: var(--color-text-secondary); margin: 0; }
+.g-result{ font-size: 11px; font-weight: 500; margin: 4px 0 0; color: #085041; }
+</style>
+
+<h2 class="sr-only">Ambient interface design — orb states, zero-banner phone UI, and product phase roadmap</h2>
+
+<div class="card">
+  <p class="card-label">orb states — live animations</p>
+  <p style="font-size:12px;color:var(--color-text-secondary);margin:0 0 14px">Each state has a biological rhythm. You perceive it, you don't read it.</p>
+  <div class="orb-demo">
+    <div class="orb-item"><div class="orb orb-idle"></div><p class="orb-label">idle — dark</p></div>
+    <div class="orb-item"><div class="orb orb-queued"></div><p class="orb-label">queued — slow breath</p></div>
+    <div class="orb-item"><div class="orb orb-waiting"></div><p class="orb-label">waiting — amber glow</p></div>
+    <div class="orb-item"><div class="orb orb-urgent"></div><p class="orb-label">ping 3 — red pulse</p></div>
+    <div class="orb-item"><div class="orb orb-critical"></div><p class="orb-label">critical — rapid crimson</p></div>
+    <div class="orb-item"><div class="orb orb-got"></div><p class="orb-label">got it — green flash</p></div>
+    <div class="orb-item"><div class="orb orb-jolt"></div><p class="orb-label">DND break — white jolt</p></div>
+  </div>
+  <p class="rule">The pulse frequency is the urgency signal. A slow amber breath says "something is pending, no rush." A rapid crimson strobe says "this needed you 40 minutes ago." No text. No banner. Just light and rhythm.</p>
+</div>
+
+<div class="card">
+  <p class="card-label">zero-banner phone UI — three expressions</p>
+  <div class="phone-row">
+
+    <div class="phone-mini">
+      <div class="phone-screen">
+        <span class="screen-time">09:41</span>
+        <span class="screen-date">Wednesday 15 April</span>
+        <div class="aod-orb aod-amber"></div>
+        <div class="edge-glow edge-amber"></div>
+      </div>
+      <p class="phone-mini-label">always-on display — amber orb + edge glow</p>
+    </div>
+
+    <div class="phone-mini">
+      <div class="phone-screen">
+        <span class="screen-time">09:41</span>
+        <span class="screen-date">Wednesday 15 April</span>
+        <div class="di-bar">
+          <div class="di-dot di-amber"></div>
+          <span class="di-text">Bello · waiting</span>
+        </div>
+        <div class="edge-glow edge-amber"></div>
+      </div>
+      <p class="phone-mini-label">dynamic island — live ping dot</p>
+    </div>
+
+    <div class="phone-mini">
+      <div class="phone-screen">
+        <span class="screen-time">09:41</span>
+        <span class="screen-date">Wednesday 15 April</span>
+        <div class="aod-orb aod-crimson"></div>
+        <div class="edge-glow edge-crimson"></div>
+      </div>
+      <p class="phone-mini-label">critical session — crimson pulse + edge</p>
+    </div>
+
+  </div>
+  <p class="rule">No banner. No text. No swipe. The lock screen IS the status. The edge glow is visible from across a room — the phone doesn't even need to be picked up. On iPhone, the Dynamic Island carries the live session dot persistently while the app runs in background.</p>
+</div>
+
+<div class="card">
+  <p class="card-label">in-pocket response — gesture protocol</p>
+  <p style="font-size:12px;color:var(--color-text-secondary);margin:0 0 10px">When the phone is in a pocket or face-down, the haptic is the interface. No screen needed.</p>
+
+  <div class="gesture-block">
+    <p class="g-title">Single back-tap (iPhone) or squeeze (Android)</p>
+    <p class="g-sub">Phone pulsing in pocket — tap the back of the device once</p>
+    <p class="g-result">→ sends "got it"</p>
+  </div>
+  <div class="gesture-block">
+    <p class="g-title">Double back-tap</p>
+    <p class="g-sub">Registered by accelerometer / back-tap gesture API</p>
+    <p class="g-result">→ sends "decline"</p>
+  </div>
+  <div class="gesture-block">
+    <p class="g-title">Haptic breath pattern</p>
+    <p class="g-sub">Every 2 minutes while session is active — faint rhythmic pulse so you never forget something is pending</p>
+    <p class="g-result">→ passive awareness, no action required</p>
+  </div>
+  <p class="rule">Back-tap is a native iOS accessibility feature already. Android has squeeze gestures on Pixel devices. This means in-pocket response ships without any special hardware — just OS-level gesture mapping.</p>
+</div>
+
+<div class="card">
+  <p class="card-label">product phase roadmap — orb as natural evolution</p>
+  <div class="phase-row">
+    <div class="phase-block">
+      <span class="phase-num">1</span>
+      <div class="phase-info">
+        <p class="phase-title">Ship the protocol</p>
+        <p class="phase-sub">App only. Zero-banner UI, edge glow, AOD orb, back-tap gestures. No hardware. Full ambient experience lives entirely on existing devices.</p>
+        <span class="phase-tag pt-now">build now</span>
+      </div>
+    </div>
+    <div class="phase-block">
+      <span class="phase-num">2</span>
+      <div class="phase-info">
+        <p class="phase-title">Dynamic Island + wearable</p>
+        <p class="phase-sub">Deep iOS Dynamic Island integration. Apple Watch complication showing live session state. Android Wear equivalent. Still no proprietary hardware.</p>
+        <span class="phase-tag pt-next">after launch</span>
+      </div>
+    </div>
+    <div class="phase-block">
+      <span class="phase-num">3</span>
+      <div class="phase-info">
+        <p class="phase-title">The physical Orb</p>
+        <p class="phase-sub">Frosted glass desktop orb. Bluetooth LE to phone. Single tap = got it, cover = decline, flip = mute session. Professional environments — clinics, pharmacies, site offices, executive desks.</p>
+        <span class="phase-tag pt-fut">hardware play</span>
+      </div>
+    </div>
+    <div class="phase-block">
+      <span class="phase-num">4</span>
+      <div class="phase-info">
+        <p class="phase-title">Enterprise Orb network</p>
+        <p class="phase-sub">Multiple Orbs on one network. Floor manager sees 12 Orbs on a dashboard — each one a crew member's current signal state. Ambient operations visibility without a single screen check.</p>
+        <span class="phase-tag pt-fut">enterprise product</span>
+      </div>
+    </div>
+  </div>
+</div>
