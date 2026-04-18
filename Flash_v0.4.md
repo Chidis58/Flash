@@ -1,6 +1,6 @@
 # Flash ⚡ v0.4
 
-> **Note:** This specification is the absolute and definitive record of the Flash protocol. It supersedes and renders obsolete all previous documentation, including "Nod", "Flash v0.1", "Flash v0.2", and "Flash v0.3".
+> **Note:** This specification is the absolute and definitive record of the Flash protocol. It supersedes and renders obsolete all previous documentation, including "Nod", "Flash v0.1", "Flash v0.2", and "Flash v0.3", "README".
 
 **Flash** is an ambient communication layer designed for zero‑latency coordination. It is a "Short‑Pulse" protocol that behaves like a phone call but carries the lightweight intent of a message. It is designed specifically for high‑speed environments where looking at a screen to read a long chat is impossible.
 
