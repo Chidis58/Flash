@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flash — Product Spec v0.2</title>
+<style>
+  :root {
+    --color-background-primary: #ffffff;
+    --color-background-secondary: #f5f4ef;
+    --color-background-tertiary: #eeede8;
+    --color-text-primary: #1a1a18;
+    --color-text-secondary: #5a5a56;
+    --color-text-tertiary: #8a8a84;
+    --color-border-tertiary: rgba(0,0,0,0.1);
+    --color-border-secondary: rgba(0,0,0,0.18);
+    --color-border-primary: rgba(0,0,0,0.28);
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-background-primary: #1c1c1a;
+      --color-background-secondary: #242422;
+      --color-background-tertiary: #2c2c2a;
+      --color-text-primary: #e8e6de;
+      --color-text-secondary: #a0a09a;
+      --color-text-tertiary: #6a6a64;
+      --color-border-tertiary: rgba(255,255,255,0.08);
+      --color-border-secondary: rgba(255,255,255,0.14);
+      --color-border-primary: rgba(255,255,255,0.22);
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font-sans);background:var(--color-background-tertiary);color:var(--color-text-primary);padding:24px 16px;line-height:1.5}
+  .container{max-width:760px;margin:0 auto}
+  .wrap{padding:4px 0}
+  .doc-header{padding:24px 0 18px;border-bottom:.5px solid var(--color-border-tertiary);margin-bottom:18px}
+  .doc-title{font-size:28px;font-weight:500;color:var(--color-text-primary);margin:0 0 4px}
+  .doc-sub{font-size:14px;color:var(--color-text-secondary);margin:0 0 12px}
+  .doc-meta{display:flex;gap:7px;flex-wrap:wrap}
+  .mc{font-size:10px;font-weight:500;padding:3px 10px;border-radius:99px}
+  .mc1{background:#E1F5EE;color:#085041}
+  .mc2{background:#FAEEDA;color:#633806}
+  .mc3{background:#EEEDFE;color:#3C3489}
+  .mc4{background:#FCEBEB;color:#A32D2D}
+
+  .section{margin-bottom:18px;background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+  .sh{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;border-bottom:.5px solid transparent;transition:background .15s;user-select:none}
+  .sh:hover{background:var(--color-background-secondary)}
+  .sh.open{border-bottom-color:var(--color-border-tertiary)}
+  .sn{font-size:11px;font-weight:500;color:var(--color-text-tertiary);min-width:18px}
+  .st{font-size:13px;font-weight:500;color:var(--color-text-primary);flex:1}
+  .stag{font-size:10px;font-weight:500;padding:2px 7px;border-radius:99px}
+  .tag-core{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+  .tag-new{background:#FCEBEB;color:#A32D2D}
+  .tag-ui{background:#E6F1FB;color:#0C447C}
+  .tag-logic{background:#FAEEDA;color:#633806}
+  .tag-trust{background:#E1F5EE;color:#085041}
+  .tag-hw{background:#EEEDFE;color:#3C3489}
+  .tag-road{background:#F1EFE8;color:#5F5E5A}
+  .chev{font-size:12px;color:var(--color-text-tertiary);transition:transform .2s;flex-shrink:0}
+  .chev.op{transform:rotate(90deg)}
+  .sb2{display:none;padding:12px 16px}
+  .sb2.op{display:block}
+
+  .row{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:.5px solid var(--color-border-tertiary)}
+  .row:last-child{border-bottom:none}
+  .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:6px}
+  .d-core{background:#888780}.d-new{background:#E24B4A}.d-ui{background:#378ADD}
+  .d-logic{background:#BA7517}.d-trust{background:#1D9E75}.d-hw{background:#7F77DD}
+  .rb{flex:1}
+  .rf{font-size:13px;font-weight:500;color:var(--color-text-primary);margin:0 0 3px}
+  .rd{font-size:12px;color:var(--color-text-secondary);margin:0;line-height:1.6}
+  .rs{font-size:11px;font-weight:500;margin:4px 0 0}
+  .rp1{color:#1D9E75}.rp2{color:#BA7517}.rp3{color:#7F77DD}
+
+  .new-badge{display:inline-block;font-size:9px;font-weight:500;padding:1px 6px;border-radius:99px;background:#FCEBEB;color:#A32D2D;margin-left:6px;vertical-align:middle}
+  .updated-badge{display:inline-block;font-size:9px;font-weight:500;padding:1px 6px;border-radius:99px;background:#FAEEDA;color:#633806;margin-left:6px;vertical-align:middle}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0}
+  @media(max-width:500px){.two{grid-template-columns:1fr}}
+  .tc2{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px}
+  .tc2t{font-size:13px;font-weight:500;color:var(--color-text-primary);margin:0 0 4px}
+  .tc2d{font-size:12px;color:var(--color-text-secondary);margin:0;line-height:1.5}
+
+  .table-wrap{overflow-x:auto;margin:6px 0}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th{text-align:left;padding:6px 8px;background:var(--color-background-secondary);color:var(--color-text-tertiary);font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.04em;border-bottom:.5px solid var(--color-border-tertiary)}
+  td{padding:7px 8px;border-bottom:.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .tdf{font-weight:500;color:var(--color-text-primary)}
+  .tdp1{color:#1D9E75;font-weight:500}.tdp2{color:#BA7517;font-weight:500}.tdp3{color:#7F77DD;font-weight:500}
+
+  .soldier-demo{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:12px 0}
+  .sd{display:flex;flex-direction:column;align-items:center;gap:5px}
+  .sc3{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px}
+  .sc-neg{background:rgba(121,31,31,.12);border:1px solid rgba(121,31,31,.35)}
+  .sc-bolt{background:rgba(186,117,23,.12);border:1px solid rgba(186,117,23,.35)}
+  .sc-check{background:rgba(29,158,117,.12);border:1px solid rgba(29,158,117,.35)}
+  .sc-warm{background:rgba(127,119,221,.12);border:1px solid rgba(127,119,221,.35)}
+  .sc-lat{background:var(--color-background-secondary);border:.5px solid var(--color-border-secondary)}
+  .sdl{font-size:10px;color:var(--color-text-tertiary);text-align:center;max-width:64px;line-height:1.3}
+
+  .color-row{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+  .cc{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--color-text-secondary)}
+  .ccd{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+  .phase-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:8px 0;border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);overflow:hidden}
+  @media(max-width:600px){.phase-strip{grid-template-columns:1fr 1fr}}
+  .pb{padding:10px 12px;border-right:.5px solid var(--color-border-tertiary)}
+  .pb:last-child{border-right:none}
+  @media(max-width:600px){.pb:nth-child(2){border-right:none}.pb:nth-child(3){border-top:.5px solid var(--color-border-tertiary)}.pb:nth-child(4){border-right:none;border-top:.5px solid var(--color-border-tertiary)}}
+  .pbn{font-size:10px;font-weight:500;color:var(--color-text-tertiary);margin:0 0 2px}
+  .pbt{font-size:12px;font-weight:500;color:var(--color-text-primary);margin:0 0 4px}
+  .pbi{font-size:11px;color:var(--color-text-secondary);margin:0;line-height:1.6}
+
+  .change-block{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:11px 14px;margin-bottom:8px;border-left:3px solid #E24B4A}
+  .change-block:last-child{margin-bottom:0}
+  .cb-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin:0 0 4px}
+  .cb-sub{font-size:12px;color:var(--color-text-secondary);margin:0;line-height:1.5}
+  .cb-why{font-size:11px;color:var(--color-text-tertiary);margin:5px 0 0;font-style:italic}
+
+  .footer{text-align:center;padding:24px 0 8px;font-size:11px;color:var(--color-text-tertiary)}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="wrap">
+
+<div class="doc-header">
+  <p class="doc-title">Flash</p>
+  <p class="doc-sub">Signal communication protocol — full product specification</p>
+  <div class="doc-meta">
+    <span class="mc mc1">Concept complete</span>
+    <span class="mc mc2">Phase 1 ready to build</span>
+    <span class="mc mc3">v0.2 — Flash update</span>
+    <span class="mc mc4">5 changes from v0.1</span>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sh open" onclick="tog('s-changes')">
+    <span class="sn">△</span>
+    <span class="st">What changed in v0.2 <span class="updated-badge">5 updates</span></span>
+    <span class="stag tag-new">changelog</span>
+    <span class="chev op" id="ch-s-changes">›</span>
+  </div>
+  <div class="sb2 op" id="s-changes">
+    <div class="change-block">
+      <p class="cb-title">1 — Brand: Nod → Flash</p>
+      <p class="cb-sub">Every reference updated throughout the spec. "Flash" as noun, verb, and brand. Flash calling, flash back, flashing.</p>
+      <p class="cb-why">Why: "Flash" is a cultural verb already in global use. It implies speed, light, and active intent rather than passive agreement.</p>
+    </div>
+    <div class="change-block">
+      <p class="cb-title">2 — Short-pulse call: 3 seconds → 8 seconds</p>
+      <p class="cb-sub">The incoming flash behaves like a ringing call for exactly 8 seconds before settling into the persistent ambient Orb.</p>
+      <p class="cb-why">Why: 8 seconds solves notification blindness. Long enough to be unmissable. Short enough to never feel like an obligation.</p>
+    </div>
+    <div class="change-block">
+      <p class="cb-title">3 — Binary Soldiers replace text buttons</p>
+      <p class="cb-sub">❌ bottom-left always. ⚡ bottom-right during ringing. ✔️ bottom-right during passive Orb. No text labels on action buttons.</p>
+      <p class="cb-why">Why: Icons process 3× faster than text. Left-negative, right-positive locks into muscle memory after first use. Crisis-speed interaction.</p>
+    </div>
+    <div class="change-block">
+      <p class="cb-title">4 — Submerged identity anchor (DP inside Orb)</p>
+      <p class="cb-sub">DP appears immediately inside the Orb from first flash. Masked and submerged — not a flat photo overlay. State-aware opacity and saturation.</p>
+      <p class="cb-why">Why: Face recognition is faster than name reading. Identity confirmed in peripheral vision before focus lands on any text.</p>
+    </div>
+    <div class="change-block">
+      <p class="cb-title">5 — Melt transition on soldier tap</p>
+      <p class="cb-sub">Tapping a soldier causes it to bloom outward then collapse as the Orb transitions to its final state — green bloom for got-it, red bloom for decline.</p>
+      <p class="cb-why">Why: Tactile satisfaction. The transaction visibly seals. Mental state shifts from active to complete in one motion.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sh" onclick="tog('s0')">
+    <span class="sn">0</span>
+    <span class="st">Core philosophy</span>
+    <span class="stag tag-core">foundation</span>
+    <span class="chev" id="ch-s0">›</span>
+  </div>
+  <div class="sb2" id="s0">
+    <div class="two">
+      <div class="tc2"><p class="tc2t">The flash is the message</p><p class="tc2d">A flash carries zero content. Its meaning is borrowed entirely from the pre-established relationship. The signal itself is the communication.</p></div>
+      <div class="tc2"><p class="tc2t">Zero social debt</p><p class="tc2d">Flash back — debt paid. Decline — debt respectfully refused. No lingering obligation. The session ends and everyone moves on.</p></div>
+      <div class="tc2"><p class="tc2t">Peripheral awareness</p><p class="tc2d">You perceive the state, you don't check it. Color, rhythm, and light over banners and text. The environment is the interface.</p></div>
+      <div class="tc2"><p class="tc2t">Consent is mutual</p><p class="tc2d">No relationship can be imposed unilaterally. Both parties agree to every meaning, timing parameter, and direction of authority.</p></div>
+      <div class="tc2"><p class="tc2t">The record is the referee</p><p class="tc2d">Both sides hold an identical immutable copy of every session. Neither party can rewrite history or dispute a timestamp.</p></div>
+      <div class="tc2"><p class="tc2t">Protocol over escape hatch</p><p class="tc2d">No early fallback to calls or messaging. Trust the protocol, train the users. The system enforces its own discipline.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sh" onclick="tog('s1')">
+    <span class="sn">1</span>
+    <span class="st">Signal types</span>
+    <span class="stag tag-core">core</span>
+    <span class="chev" id="ch-s1">›</span>
+  </div>
+  <div class="sb2" id="s1">
+    <div class="table-wrap">
+      <table>
+        <tr><th>Property</th><th>Action flash</th><th>Warmth flash</th></tr>
+        <tr><td class="tdf">Hierarchy</td><td>Superior → executor. Asymmetric by design.</td><td>Peer. Neither side leads.</td></tr>
+        <tr><td class="tdf">Reply</td><td>Expected. ⚡/✔️ or ❌.</td><td>Optional. Never required.</td></tr>
+        <tr><td class="tdf">Ringing phase</td><td>8 seconds full-screen. Amber → crimson glow.</td><td>8 seconds. Soft purple/pink/teal glow.</td></tr>
+        <tr><td class="tdf">Left soldier</td><td>❌ — decline. Always.</td><td>··· — later. Never hard rejection.</td></tr>
+        <tr><td class="tdf">Right soldier (ring)</td><td>⚡ — flash back.</td><td>⚡ — felt it.</td></tr>
+        <tr><td class="tdf">Right soldier (orb)</td><td>✔️ — got it.</td><td>✔️ — acknowledged.</td></tr>
+        <tr><td class="tdf">Melt outcome</td><td>Green bloom (⚡/✔️) or red bloom (❌).</td><td>Soft purple fade (◎).</td></tr>
+        <tr><td class="tdf">Escalation</td><td>Up to 4 flashes. Color deepens each re-flash.</td><td>One flash only. Never re-flashed.</td></tr>
+        <tr><td class="tdf">Session</td><td>Governed. Expiry, cooldown, escalation.</td><td>Sessionless. Lands and fades.</td></tr>
+        <tr><td class="tdf">History</td><td>Full immutable log. Timestamps to the second.</td><td>Count only. No timestamps.</td></tr>
+        <tr><td class="tdf">Orb palette</td><td>Gray → amber → red → crimson.</td><td>Purple, pink, teal, blue. Soft only.</td></tr>
+        <tr><td class="tdf">DND override</td><td>Mutual opt-in. From flash 3+.</td><td>Never. Warmth never overrides DND.</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sh" onclick="tog('s2')">
+    <span class="sn">2</span>
+    <span class="st">Incoming flash UI <span class="new-badge">updated v0.2</span></span>
+    <span class="stag tag-new">v0.2</span>
+    <span class="chev" id="ch-s2">›</span>
+  </div>
+  <div class="sb2" id="s2">
+    <div class="row">
+      <div class="dot d-new"></div>
+      <div class="rb">
+        <p class="rf">Full-screen takeover — 8 seconds</p>
+        <p class="rd">Near-black background. Radial glow from center in session color. Edge inset ring pulsing at haptic rhythm. Three expanding ripple rings — the visual ringing. Timer bar draining at bottom over exactly 8 seconds. Submerged DP inside breathing Orb. Sender name and predefined message above.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="dot d-new"></div>
+      <div class="rb">
+        <p class="rf">Binary Soldiers — spatial, never textual</p>
+        <p class="rd">❌ fixed bottom-left throughout both phases. ⚡ bottom-right during 8-second ring. ✔️ bottom-right during passive Orb. No label text on circles — icons only. Warmth left soldier is ··· not ❌.</p>
+        <div class="soldier-demo">
+          <div class="sd"><div class="sc3 sc-neg">❌</div><p class="sdl">left · always negative</p></div>
+          <div class="sd"><div class="sc3 sc-bolt">⚡</div><p class="sdl">right · ringing phase</p></div>
+          <div class="sd"><div class="sc3 sc-check">✔️</div><p class="sdl">right · orb phase</p></div>
+          <div class="sd"><div class="sc3 sc-lat" style="font-size:16px">···</div><p class="sdl">warmth left · no rejection</p></div>
+          <div class="sd"><div class="sc3 sc-warm">⚡</div><p class="sdl">warmth right · felt it</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="dot d-new"></div>
+      <div class="rb">
+        <p class="rf">Submerged identity anchor</p>
+        <p class="rd">Four layers: dynamic glow / frosted glass / identity ring / quiet DP. DP grayscale at idle, full color when active, shakes on flash 3+. Peripheral vision registers urgency color first, identity face second. Both confirmed under one second without reading any text.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="dot d-new"></div>
+      <div class="rb">
+        <p class="rf">Re-flash escalation on screen</p>
+        <p class="rd">No digit shown. Color alone carries the count — amber for flash 2, red for flash 3, crimson for flash 4. DP shakes from flash 3 onward. Edge strobe accelerates with each escalation. Urgency is felt before anything is read.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="dot d-new"></div>
+      <div class="rb">
+        <p class="rf">The melt transition</p>
+        <p class="rd">Soldier tapped → blooms outward momentarily → collapses to zero as Orb simultaneously transitions to final state. ⚡ or ✔️ tap → Orb blooms green, holds 2 seconds, writes to history. ❌ tap → Orb blooms red, same hold. Warmth ⚡ → soft purple ◎ fade. Haptic fires at exact melt moment — physical and visual confirmation are simultaneous.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="dot d-new"></div>
+      <div class="rb">
+        <p class="rf">Collapse to ambient Orb</p>
+        <p class="rd">After 8 seconds with no response — full-screen shrinks, Orb reduces in size and glow intensity, joins ambient live stack. Persistent banner at top with contact name and one-tap reply. Mini Orb continues breathing. ⚡ transitions to ✔️. Nothing is lost.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="dot d-new"></div>
+      <div class="rb">
+        <p class="rf">In-pocket gesture response</p>
+        <p class="rd">Single back-tap = ⚡/✔️. Double back-tap = ❌. Native iOS back-tap API and Android squeeze. Haptic breath every 2 minutes while session active. No screen required to respond.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sh" onclick="tog('s3')">
+    <span class="sn">3</span>
+    <span class="st">Flash lifecycle — action signal</span>
+    <span class="stag tag-logic">logic</span>
+    <span class="chev" id="ch-s3">›</span>
+  </div>
+  <div class="sb2" id="s3">
+    <div class="row"><div class="dot d-logic"></div><div class="rb"><p class="rf">Flash 1 — normal</p><p class="rd">8-second full-screen. Amber glow. Single haptic burst synced to ripple rings. Standard delivery. No DND override.</p></div></div>
+    <div class="row"><div class="dot d-logic"></div><div class="rb"><p class="rf">Flash 2 — noticed</p><p class="rd">8-second full-screen again. Amber deepening. Longer haptic. Gap since flash 1 logged in session timeline. Receiver sees this is a follow-up.</p></div></div>
+    <div class="row"><div class="dot d-logic"></div><div class="rb"><p class="rf">Flash 3 — urgent</p><p class="rd">Red glow. Double pulse haptic. DP shakes on receiver screen. DND override fires if mutually enabled. Urgency communicated before brain processes text.</p></div></div>
+    <div class="row"><div class="dot d-logic"></div><div class="rb"><p class="rf">Flash 4 — critical</p><p class="rd">Crimson. Triple pulse. White jolt flash before crimson if DND override active. Session seals after this flash regardless. Sender locked. Cooldown begins.</p></div></div>
+    <div class="row"><div class="dot d-logic"></div><div class="rb"><p class="rf">Session close conditions</p><p class="rd">⚡ or ✔️ tap · ❌ tap · Signal expiry · Flash 4 no reply (critical seal) · Sender cancels before delivery. Each writes to history in session color.</p></div></div>
+    <div class="row"><div class="dot d-logic"></div><div class="rb"><p class="rf">New session after critical</p><p class="rd">Cooldown enforced by system. Next session opens neutral — amber, no carry-over. Old crimson session permanent in history. Never deletable.</p></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sh" onclick="tog('s4')">
+    <span class="sn">4</span>
+    <span class="st">Offline and unreachable states</span>
+    <span class="stag tag-logic">logic</span>
+    <span class="chev" id="ch-s4">›</span>
+  </div>
+  <div class="sb2" id="s4">
+    <div class="table-wrap">
+      <table>
+        <tr><th>State</th><th>Condition</th><th>Sender sees</th><th>Expiry timer</th></tr>
+        <tr><td class="tdf">Queued</td><td>No data. Phone on.</td><td>Faint tick. "Flash queued."</td><td>Paused until delivery.</td></tr>
+        <tr><td class="tdf">Held</td><td>Phone off or no coverage.</td><td>Hollow tick + held timestamp.</td><td>Paused until delivery.</td></tr>
+        <tr><td class="tdf">DND active</td><td>Receiver in focus mode.</td><td>DND icon + estimated window end.</td><td>Running. Flash waits.</td></tr>
+        <tr><td class="tdf">Expired</td><td>Context window closed before delivery.</td><td>Expiry notice. Session void.</td><td>Triggered expiry.</td></tr>
+        <tr><td class="tdf">No reply</td><td>Delivered. Reply window elapsed.</td><td>"No reply" state. Re-flash option.</td><td>Running normally.</td></tr>
+        <tr><td class="tdf">Cancelled</td><td>Sender pulls back before delivery.</td><td>Session voided silently.</td><td>Terminated.</td></tr>
+      </table>
+    </div>
+    <p style="font-size:11px;color:var(--color-text-tertiary);margin:8px 0 0">Expiry timer always starts from delivery time, never send time. A queued flash is never penalised for the receiver's offline period.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sh" onclick="tog('s5')">
+    <span class="sn">5</span>
+    <span class="st">Relationship setup flow</span>
+    <span class="stag tag-core">core</span>
+    <span class="chev" id="ch-s5">›</span>
+  </div>
+  <div class="sb2" id="s5">
+    <div class="row"><div class="dot d-core"></div><div class="rb"><p class="rf">Step 1 — Who</p><p class="rd">Search by name or @username. Or send a setup link — pre-fills proposed settings so receiver doesn't start blank. Link expires in 72 hours.</p></div></div>
+    <div class="row"><div class="dot d-core"></div><div class="rb"><p class="rf">Step 2 — Signal type fork</p><p class="rd">Action or warmth. Everything downstream changes. Action = 5 steps. Warmth = 2 steps. Both can coexist between the same two people as separate relationships.</p></div></div>
+    <div class="row"><div class="dot d-core"></div><div class="rb"><p class="rf">Step 3A — Roles and meanings (action)</p><p class="rd">Relationship type preset or custom. Superior and executor roles defined. Directional meaning set per side. Executor's return flash is always a question, never a command — enforced by UI label.</p></div></div>
+    <div class="row"><div class="dot d-core"></div><div class="rb"><p class="rf">Step 3W — Shared meaning (warmth)</p><p class="rd">One meaning, both directions. No role labels. Palette color selection — purple, pink, teal, blue only. Amber and red unavailable — owned by action signals.</p></div></div>
+    <div class="row"><div class="dot d-core"></div><div class="rb"><p class="rf">Step 4A — Session behaviour (action)</p><p class="rd">Signal expiry · Reply window · Cooldown after flash 4 · DND override threshold (mutual opt-in) · Max flashes per day. All per-relationship, not global.</p></div></div>
+    <div class="row"><div class="dot d-core"></div><div class="rb"><p class="rf">Step 4W — Soft limits (warmth)</p><p class="rd">Daily soft limit (default 3). Fade without reply toggle. Soft history (count only). No expiry, cooldown, or escalation settings.</p></div></div>
+    <div class="row"><div class="dot d-core"></div><div class="rb"><p class="rf">Step 5 — Confirm, send, negotiate</p><p class="rd">Full summary before sending. Receiver sees all settings with inline edit pills. Negotiate sends counter-proposal. Accept locks live. Both sides must agree same version.</p></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sh" onclick="tog('s6')">
+    <span class="sn">6</span>
+    <span class="st">Sender status screen</span>
+    <span class="stag tag-ui">interface</span>
+    <span class="chev" id="ch-s6">›</span>
+  </div>
+  <div class="sb2" id="s6">
+    <div class="row"><div class="dot d-ui"></div><div class="rb"><p class="rf">Live tab</p><p class="rd">Summary strip — got it / waiting / queued / critical counts. Active sessions with mini Orbs and submerged DPs. Dot cluster = flash count. Acknowledged today below active. Tap any row → session detail.</p></div></div>
+    <div class="row"><div class="dot d-ui"></div><div class="rb"><p class="rf">Session detail screen</p><p class="rd">Contact name and role. Signal intent. Full flash timeline with timestamps to the second. Gap between flashes in italic. Expiry bar live. Re-flash button or cooldown countdown.</p></div></div>
+    <div class="row"><div class="dot d-ui"></div><div class="rb"><p class="rf">History tab</p><p class="rd">Chronological, grouped by month. Color bar left of each entry. Tap to expand full session. Immutable. Both sides hold identical copies.</p></div></div>
+    <div class="row"><div class="dot d-ui"></div><div class="rb"><p class="rf">Received tab</p><p class="rd">Flashes sent to user as receiver. Their reply record. Immutable timestamps. Protects receiver from false accusations.</p></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sh" onclick="tog('s7')">
+    <span class="sn">7</span>
+    <span class="st">Relationship history view</span>
+    <span class="stag tag-trust">trust</span>
+    <span class="chev" id="ch-s7">›</span>
+  </div>
+  <div class="sb2" id="s7">
+    <div class="row"><div class="dot d-trust"></div><div class="rb"><p class="rf">Timeline tab</p><p class="rd">Full session history since inception. Grouped by month. Tap to expand. Flash-by-flash breakdown with gap in italic. Seconds-level timestamps on all events.</p></div></div>
+    <div class="row"><div class="dot d-trust"></div><div class="rb"><p class="rf">Stats tab</p><p class="rd">Got it / declined / expired / critical totals. Response rate bar chart by month. Relationship health visible without editorial commentary.</p></div></div>
+    <div class="row"><div class="dot d-trust"></div><div class="rb"><p class="rf">Meanings tab</p><p class="rd">Current active meanings with effective dates. Full meaning change history. Neither party can dispute what the flash meant at any point in time.</p></div></div>
+    <div class="row"><div class="dot d-trust"></div><div class="rb"><p class="rf">Flash-back count</p><p class="rd">Private count of sessions marked ignored. Visible only to sender. Informational, not punitive. Tells sender: this person has a pattern.</p></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sh" onclick="tog('s8')">
+    <span class="sn">8</span>
+    <span class="st">Orb and ambient interface <span class="updated-badge">updated v0.2</span></span>
+    <span class="stag tag-hw">ambient</span>
+    <span class="chev" id="ch-s8">›</span>
+  </div>
+  <div class="sb2" id="s8">
+    <div class="color-row">
+      <div class="cc"><div class="ccd" style="background:#888780"></div>Queued — slow gray breath</div>
+      <div class="cc"><div class="ccd" style="background:#BA7517"></div>Waiting — amber glow</div>
+      <div class="cc"><div class="ccd" style="background:#E24B4A"></div>Flash 3 — red pulse</div>
+      <div class="cc"><div class="ccd" style="background:#791F1F"></div>Critical — rapid crimson</div>
+      <div class="cc"><div class="ccd" style="background:#1D9E75"></div>Got it — green bloom</div>
+      <div class="cc"><div class="ccd" style="background:#E24B4A"></div>Declined — red bloom</div>
+      <div class="cc"><div class="ccd" style="background:#7F77DD"></div>Warmth — soft purple</div>
+    </div>
+    <div class="row"><div class="dot d-hw"></div><div class="rb"><p class="rf">Submerged DP — four layer architecture</p><p class="rd">Layer 1: dynamic glow — changes color per state. Layer 2: frosted glass — backdrop blur creates submerged quality. Layer 3: identity ring — thin border in state color. Layer 4: quiet DP — static, opacity and saturation only.</p></div></div>
+    <div class="row"><div class="dot d-hw"></div><div class="rb"><p class="rf">Zero-banner phone UI</p><p class="rd">No slide-down notifications. AOD shows blurred Orb glow in session color. Edge glow on lock screen visible across a room. Dynamic Island carries live session dot on iOS.</p></div></div>
+    <div class="row"><div class="dot d-hw"></div><div class="rb"><p class="rf">Physical Orb — Phase 3</p><p class="rd">Frosted glass desktop sphere. Bluetooth LE. Single tap = ✔️. Cover = ❌. Flip = mute session. Observer of signal engine state machine.</p><p class="rs rp3">phase 3</p></div></div>
+    <div class="row"><div class="dot d-hw"></div><div class="rb"><p class="rf">Enterprise Orb network — Phase 4</p><p class="rd">Multiple Orbs, one network. Each Orb = one person's live signal state. Ambient operations visibility. No screens, no dashboards.</p><p class="rs rp3">phase 4</p></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sh" onclick="tog('s9')">
+    <span class="sn">9</span>
+    <span class="st">Contextual badges</span>
+    <span class="stag tag-ui">interface</span>
+    <span class="chev" id="ch-s9">›</span>
+  </div>
+  <div class="sb2" id="s9">
+    <div class="row"><div class="dot d-ui"></div><div class="rb"><p class="rf">Allowed</p><p class="rd">Location pin · ETA (5 / 10 / 30 min) · Floor or room number · Urgency flag · Time slot. Max 3 badge types per relationship. Configured at setup, not free-form.</p></div></div>
+    <div class="row"><div class="dot d-ui"></div><div class="rb"><p class="rf">Never allowed</p><p class="rd">Video · document · image · voice note · free text · link · emoji. Any attachment that says something new rather than sharpening the existing meaning is messaging. That line holds permanently.</p></div></div>
+    <div class="row"><div class="dot d-ui"></div><div class="rb"><p class="rf">Interaction</p><p class="rd">Long-press flash button before sending → badge tray opens. One tap to attach. One badge per flash maximum. Badge appears alongside predefined message on receiver's full-screen takeover.</p></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sh" onclick="tog('s10')">
+    <span class="sn">10</span>
+    <span class="st">Product phase roadmap</span>
+    <span class="stag tag-road">roadmap</span>
+    <span class="chev" id="ch-s10">›</span>
+  </div>
+  <div class="sb2" id="s10">
+    <div class="phase-strip">
+      <div class="pb">
+        <p class="pbn tdp1">Phase 1</p>
+        <p class="pbt">Ship the protocol</p>
+        <p class="pbi">Core flash engine · Relationship setup · Session lifecycle · 8-second ring · Binary Soldiers · Melt transition · Submerged DP · Zero-banner UI · AOD Orb · Edge glow · Back-tap gestures · Bilateral history · Sender status screen</p>
+      </div>
+      <div class="pb">
+        <p class="pbn tdp2">Phase 2</p>
+        <p class="pbt">Deep OS integration</p>
+        <p class="pbi">Dynamic Island live session · Apple Watch · Android Wear · Contextual badges · Warmth signal class · Meaning negotiation flow · Haptic signature per relationship</p>
+      </div>
+      <div class="pb">
+        <p class="pbn tdp3">Phase 3</p>
+        <p class="pbt">Physical Orb</p>
+        <p class="pbi">Frosted glass hardware · Bluetooth LE · Tap/cover/flip gestures · Professional environments · Clinic / pharmacy / site office launch</p>
+      </div>
+      <div class="pb">
+        <p class="pbn" style="color:#888780">Phase 4</p>
+        <p class="pbt">Enterprise network</p>
+        <p class="pbi">Multi-Orb network · Fleet and logistics · Healthcare ward layer · B2B infrastructure · API for third-party integrations</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">Flash · Product Spec v0.2 · Confidential</div>
+
+</div>
+</div>
+
+<script>
+function tog(id){
+  const b=document.getElementById(id);
+  const c=document.getElementById('ch-'+id);
+  const h=b.previousElementSibling;
+  b.classList.toggle('op');
+  c.classList.toggle('op');
+  h.classList.toggle('open');
+}
+</script>
+</body>
+</html>
