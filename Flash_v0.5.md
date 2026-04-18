@@ -446,6 +446,3 @@ Apple or Google could theoretically copy the ambient orb + Dynamic Island visual
 **Status:** Ready for engineering handoff  
 **Supersedes:** All previous versions (README, Nod v0.1, Flash v0.1, v0.2, v0.3, v0.4)
 ```
-
----
- Siri, flash Bello ‘I’m outside’.” – vo
