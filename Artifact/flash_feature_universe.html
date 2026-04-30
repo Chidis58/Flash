@@ -1,0 +1,278 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:4px 0;font-family:var(--font-sans)}
+.card{background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:10px}
+.cl{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-tertiary);margin:0 0 14px}
+.rule{font-size:12px;color:var(--color-text-secondary);border-left:2px solid var(--color-border-secondary);padding-left:10px;margin:14px 0 0;line-height:1.6}
+.divider{border:none;border-top:.5px solid var(--color-border-tertiary);margin:4px 0 12px}
+
+.feature-grid{display:flex;flex-direction:column;gap:8px}
+.feature-block{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:11px 14px;border-left:3px solid transparent;cursor:pointer;transition:border-color .15s}
+.fb-core{border-left-color:#BA7517}
+.fb-social{border-left-color:#7F77DD}
+.fb-enterprise{border-left-color:#1D9E75}
+.fb-ambient{border-left-color:#378ADD}
+.fb-safety{border-left-color:#E24B4A}
+.fb-commerce{border-left-color:#D4537E}
+
+.f-header{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.f-icon{font-size:16px;flex-shrink:0}
+.f-name{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+.f-phase{font-size:10px;font-weight:500;padding:1px 7px;border-radius:99px;margin-left:auto;flex-shrink:0}
+.fp-1{background:#E1F5EE;color:#085041}
+.fp-2{background:#FAEEDA;color:#633806}
+.fp-3{background:#EEEDFE;color:#3C3489}
+.fp-wild{background:#FCEBEB;color:#A32D2D}
+.f-desc{font-size:11px;color:var(--color-text-secondary);line-height:1.5;margin:0}
+.f-why{font-size:11px;color:var(--color-text-tertiary);margin:5px 0 0;font-style:italic}
+
+.section-label{font-size:11px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-tertiary);margin:14px 0 8px;padding-bottom:4px;border-bottom:.5px solid var(--color-border-tertiary)}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Flash feature universe — suggested features across protocol depth, social layer, enterprise, ambient computing, safety and commerce</h2>
+
+<div class="card">
+<p class="cl">protocol depth — features that extend the core flash mechanic</p>
+<div class="feature-grid">
+
+  <div class="feature-block fb-core">
+    <div class="f-header">
+      <span class="f-icon">🔇</span>
+      <span class="f-name">Silent Mode Flash</span>
+      <span class="f-phase fp-2">Phase 2</span>
+    </div>
+    <p class="f-desc">A flash that delivers with zero sound and zero vibration — visible only on AOD or lock screen glow. Designed for environments where any haptic or audio is inappropriate: operating theatres, funerals, court, places of worship. The Orb glows. The receiver perceives it peripherally. No disruption.</p>
+    <p class="f-why">Why Flash: Every other alert system intrudes. This one inhabits the environment without disturbing it.</p>
+  </div>
+
+  <div class="feature-block fb-core">
+    <div class="f-header">
+      <span class="f-icon">⏱️</span>
+      <span class="f-name">Scheduled Flash</span>
+      <span class="f-phase fp-2">Phase 2</span>
+    </div>
+    <p class="f-desc">Send a flash now to arrive at a specific future time. "Flash Bello at 8am tomorrow — Order ready." The sender sets it once, the protocol delivers it at the right moment. Useful for shift handovers, morning standup reminders, pre-agreed appointment signals. The receiver sees it as a normal flash — no indication it was scheduled.</p>
+    <p class="f-why">Why Flash: Removes the need to remember to send. The relationship meaning does the work.</p>
+  </div>
+
+  <div class="feature-block fb-core">
+    <div class="f-header">
+      <span class="f-icon">🔁</span>
+      <span class="f-name">Recurring Flash</span>
+      <span class="f-phase fp-2">Phase 2</span>
+    </div>
+    <p class="f-desc">A flash that fires automatically on a set schedule within a relationship. "Flash Mum every morning at 7am — Home safe check." Once configured, neither side has to initiate. The receiver replies ⚡ or ❌ as normal. A missed reply after three consecutive sessions triggers the no-reply state. Built specifically for elderly care, daily check-ins, and shift confirmations.</p>
+    <p class="f-why">Why Flash: Converts one-time setup into permanent ambient reassurance. Exactly what the protocol was built for.</p>
+  </div>
+
+  <div class="feature-block fb-core">
+    <div class="f-header">
+      <span class="f-icon">🌊</span>
+      <span class="f-name">Cascade Flash</span>
+      <span class="f-phase fp-3">Phase 3</span>
+    </div>
+    <p class="f-desc">A flash that automatically forwards to a secondary contact if the primary doesn't reply within the reply window. "Flash Dr. Obi — if no reply in 5 mins, cascade to Dr. Adeyemi." Configured at relationship setup. The cascade recipient sees it as a normal flash with a subtle "forwarded" indicator. Used in clinical settings, on-call rotas, logistics chains.</p>
+    <p class="f-why">Why Flash: The protocol currently stops at flash 4. Cascade gives the signal somewhere to go when the person is genuinely unreachable.</p>
+  </div>
+
+  <div class="feature-block fb-core">
+    <div class="f-header">
+      <span class="f-icon">📍</span>
+      <span class="f-name">Location-Triggered Flash</span>
+      <span class="f-phase fp-3">Phase 3</span>
+    </div>
+    <p class="f-desc">A flash that fires automatically when the sender arrives at or leaves a geofenced location. "When I arrive at the clinic, auto-flash the reception — I'm outside." The sender sets a geofence once. The protocol fires the flash on entry. No manual send required. Receiver sees a normal flash with a location badge.</p>
+    <p class="f-why">Why Flash: Removes the "I forgot to flash when I arrived" problem entirely. The location is the trigger.</p>
+  </div>
+
+</div>
+</div>
+
+<div class="card">
+<p class="cl">social layer — features that build connection and culture</p>
+<div class="feature-grid">
+
+  <div class="feature-block fb-social">
+    <div class="f-header">
+      <span class="f-icon">🪞</span>
+      <span class="f-name">Flash Mirror</span>
+      <span class="f-phase fp-2">Phase 2</span>
+    </div>
+    <p class="f-desc">When two people flash each other within 60 seconds of each other — independently, without seeing the other's flash first — the system recognises the coincidence and delivers both flashes simultaneously with a subtle shared glow effect. No notification, no fanfare. Just a quiet visual acknowledgement: you both thought of each other at the same moment. Logged as a "mirror" in history — count only.</p>
+    <p class="f-why">Why Flash: The fleeting reciprocation was designed for this feeling. The Mirror makes it happen passively, without either person having to be quick enough to catch the ghost window.</p>
+  </div>
+
+  <div class="feature-block fb-social">
+    <div class="f-header">
+      <span class="f-icon">🔕</span>
+      <span class="f-name">Presence Status</span>
+      <span class="f-phase fp-2">Phase 2</span>
+    </div>
+    <p class="f-desc">A passive ambient signal — not a flash — that indicates general availability. Not "online/offline" like WhatsApp. Instead, three states only: In Flow (do not disturb, flash 3+ only), Available (normal flash protocol), and Stepped Away (flashes queue, no urgency). Set manually or inferred from calendar and device activity. Visible only to people you have a Flash relationship with.</p>
+    <p class="f-why">Why Flash: Current DND settings are binary and OS-level. Presence Status is relationship-aware and Flash-native. Your hairdresser sees a different status than your surgeon colleague.</p>
+  </div>
+
+  <div class="feature-block fb-social">
+    <div class="f-header">
+      <span class="f-icon">🎭</span>
+      <span class="f-name">Relationship Seasons</span>
+      <span class="f-phase fp-3">Phase 3</span>
+    </div>
+    <p class="f-desc">Relationships that are contextually active only during certain windows. "Activate this relationship only during Ramadan." "This team flash is live only during the football season." Outside the active window, flashes are blocked and the sender sees "relationship paused." Inside the window, everything works normally. Set by mutual agreement at relationship setup.</p>
+    <p class="f-why">Why Flash: Some coordination relationships are genuinely seasonal. This prevents stale relationships from cluttering the contact list without requiring deletion.</p>
+  </div>
+
+  <div class="feature-block fb-social">
+    <div class="f-header">
+      <span class="f-icon">🏅</span>
+      <span class="f-name">Flash Streaks</span>
+      <span class="f-phase fp-2">Phase 2</span>
+    </div>
+    <p class="f-desc">A quiet, private counter visible only within a relationship — how many consecutive days at least one flash was exchanged. Not a public achievement, not a leaderboard. Just a number you and one other person share. "47 days." No pressure, no notification if the streak breaks. Just a gentle record of consistent presence.</p>
+    <p class="f-why">Why Flash: Streaks on social apps create anxiety. A Flash streak creates intimacy — it's private to the relationship, not performed for an audience.</p>
+  </div>
+
+</div>
+</div>
+
+<div class="card">
+<p class="cl">safety and care — features with genuine human stakes</p>
+<div class="feature-grid">
+
+  <div class="feature-block fb-safety">
+    <div class="f-header">
+      <span class="f-icon">🆘</span>
+      <span class="f-name">Dead Man's Flash</span>
+      <span class="f-phase fp-2">Phase 2</span>
+    </div>
+    <p class="f-desc">A recurring flash that the sender must confirm at a set interval — "I'm okay" every 12 hours. If the sender fails to confirm, the system automatically flashes a designated emergency contact with a pre-set meaning: "Check on me." No action required from the sender unless something is wrong. Designed for lone workers, elderly living alone, people in volatile situations.</p>
+    <p class="f-why">Why Flash: The protocol's recurring flash infrastructure handles this naturally. The absence of a confirmation is itself the signal.</p>
+  </div>
+
+  <div class="feature-block fb-safety">
+    <div class="f-header">
+      <span class="f-icon">🤫</span>
+      <span class="f-name">Distress Code Flash</span>
+      <span class="f-phase fp-2">Phase 2</span>
+    </div>
+    <p class="f-desc">A hidden flash meaning set up in advance between two trusted contacts. Sending the distress flash looks identical to a normal warmth flash from the outside — same Orb, same glow, same meaning text. But the designated receiver sees a private indicator that the sender has activated the distress code. Designed for domestic safety situations, unsafe environments, or coercive control scenarios where a normal emergency call is impossible.</p>
+    <p class="f-why">Why Flash: The pre-agreed meaning is invisible to anyone watching the screen. The signal looks like "Thinking of you." Only the receiver knows what it actually means.</p>
+  </div>
+
+  <div class="feature-block fb-safety">
+    <div class="f-header">
+      <span class="f-icon">👴</span>
+      <span class="f-name">Guardian Mode</span>
+      <span class="f-phase fp-2">Phase 2</span>
+    </div>
+    <p class="f-desc">A simplified Flash interface for elderly or low-digital-literacy users. One contact, one meaning, one giant Orb on screen. The entire UI reduces to: one button to send, one button to receive. No history, no settings, no templates. The setup is done entirely by the family member on the elder's behalf. The elder only ever sees a glowing circle and two buttons.</p>
+    <p class="f-why">Why Flash: The protocol is already simple enough for this. Guardian Mode just removes the scaffolding that older users don't need.</p>
+  </div>
+
+</div>
+</div>
+
+<div class="card">
+<p class="cl">enterprise layer — features that make Flash a business infrastructure</p>
+<div class="feature-grid">
+
+  <div class="feature-block fb-enterprise">
+    <div class="f-header">
+      <span class="f-icon">🏥</span>
+      <span class="f-name">Flash Duty Board</span>
+      <span class="f-phase fp-3">Phase 3</span>
+    </div>
+    <p class="f-desc">A shared ambient display — wall-mounted screen or tablet — showing the live Orb state of every person on a team or shift. Each Orb glows its current session colour. The manager or coordinator sees the entire floor's signal state at a glance without checking anyone's phone. Clickable to send a flash to any individual or the whole group. Designed for clinical wards, warehouses, event operations, and site management.</p>
+    <p class="f-why">Why Flash: This is the enterprise Orb network we conceived in early design sessions, now built on software rather than hardware. Same vision, lower barrier to entry.</p>
+  </div>
+
+  <div class="feature-block fb-enterprise">
+    <div class="f-header">
+      <span class="f-icon">🤖</span>
+      <span class="f-name">System Flash (API)</span>
+      <span class="f-phase fp-3">Phase 3</span>
+    </div>
+    <p class="f-desc">Automated flashes triggered by external systems, not humans. "When order #4821 is ready for pickup, flash the customer — Order ready." "When patient vitals drop below threshold, flash the on-call doctor — Check this." The sender is a system, the receiver is a human. The flash looks and behaves identically to a human flash. The relationship is pre-configured by the enterprise admin.</p>
+    <p class="f-why">Why Flash: Most enterprise notification systems are either email (ignored) or SMS (context-free). A system flash carries meaning, escalates intelligently, and leaves an immutable record.</p>
+  </div>
+
+  <div class="feature-block fb-enterprise">
+    <div class="f-header">
+      <span class="f-icon">📊</span>
+      <span class="f-name">Flash Analytics</span>
+      <span class="f-phase fp-3">Phase 3</span>
+    </div>
+    <p class="f-desc">Anonymised team-level response patterns. Average reply time by template. Escalation frequency by relationship type. Peak coordination hours. Which meanings generate the most declines. No individual surveillance — only aggregate patterns that help operations managers understand where coordination is working and where it's breaking down.</p>
+    <p class="f-why">Why Flash: The bilateral history already logs everything needed for this. Analytics is just the aggregation layer on top of data that already exists.</p>
+  </div>
+
+</div>
+</div>
+
+<div class="card">
+<p class="cl">ambient and hardware — features that take Flash off the phone</p>
+<div class="feature-grid">
+
+  <div class="feature-block fb-ambient">
+    <div class="f-header">
+      <span class="f-icon">💡</span>
+      <span class="f-name">Flash for Smart Lights</span>
+      <span class="f-phase fp-wild">Future</span>
+    </div>
+    <p class="f-desc">When a flash arrives, a Philips Hue or similar smart light in the room pulses in the session colour for 3 seconds. Amber for waiting, green for got-it, crimson for critical. The room itself becomes the notification. No phone required. No sound. Just a light that knows something needs your attention. Configured per relationship — only specific contacts can trigger the light.</p>
+    <p class="f-why">Why Flash: This is the original Orb vision made accessible through existing smart home infrastructure. No proprietary hardware needed.</p>
+  </div>
+
+  <div class="feature-block fb-ambient">
+    <div class="f-header">
+      <span class="f-icon">⌚</span>
+      <span class="f-name">Flash Haptic Language</span>
+      <span class="f-phase fp-2">Phase 2</span>
+    </div>
+    <p class="f-desc">Each relationship gets a unique vibration pattern on the wearable. Short-long = your partner. Double-short = your manager. Triple = your doctor colleague. The wearer learns to identify who is flashing without looking at any screen — purely through touch. Patterns are set at relationship setup and remain consistent. The wrist becomes the ambient interface.</p>
+    <p class="f-why">Why Flash: The haptic signature library is already in Phase 2 roadmap. This is its fullest expression — wrist-level identity recognition through touch alone.</p>
+  </div>
+
+  <div class="feature-block fb-ambient">
+    <div class="f-header">
+      <span class="f-icon">🚗</span>
+      <span class="f-name">Flash for Connected Vehicles</span>
+      <span class="f-phase fp-wild">Future</span>
+    </div>
+    <p class="f-desc">Flash integration with car dashboards via CarPlay and Android Auto. Incoming flash appears as a dashboard glow in session colour — no text, no banner, just colour. Driver responds with a steering wheel button: one press = ⚡, double press = ❌. Zero eyes-off-road interaction. Designed specifically for delivery drivers, field reps, and transport workers who need coordination without unsafe phone use.</p>
+    <p class="f-why">Why Flash: A driver getting a flash is safer than any other form of digital communication. The pre-agreed meaning means they don't need to read anything.</p>
+  </div>
+
+</div>
+</div>
+
+<div class="card">
+<p class="cl">commerce layer — features that make Flash a transaction infrastructure</p>
+<div class="feature-grid">
+
+  <div class="feature-block fb-commerce">
+    <div class="f-header">
+      <span class="f-icon">🛒</span>
+      <span class="f-name">Flash Commerce (Needed integration)</span>
+      <span class="f-phase fp-3">Phase 3</span>
+    </div>
+    <p class="f-desc">A Flash relationship between a repeat buyer and a local seller. The buyer flashes "The usual" — the seller's pre-agreed meaning for a standard repeat order. Seller replies ⚡ = confirmed, ❌ = not available. Payment happens separately through an integrated wallet. No chat, no negotiation, no phone call. A relationship built on trust, not text. Designed for daily essentials, local markets, food vendors, artisans.</p>
+    <p class="f-why">Why Flash: This is exactly the Needed/GShop use case that was mentioned early in the spec development. The repeat purchase relationship is the highest-value use case for the protocol outside clinical settings.</p>
+  </div>
+
+  <div class="feature-block fb-commerce">
+    <div class="f-header">
+      <span class="f-icon">🚪</span>
+      <span class="f-name">Flash Check-In</span>
+      <span class="f-phase fp-3">Phase 3</span>
+    </div>
+    <p class="f-desc">A flash that serves as a presence confirmation at a physical location. Flashing a venue, a school, a clinic, or a workplace means "I am here." The receiver — a system or a person — logs the arrival. No QR code, no sign-in sheet, no app to open. The flash is the check-in. Departure can be a second flash with a different meaning: "I'm leaving." Time-stamped, immutable, bilaterally recorded.</p>
+    <p class="f-why">Why Flash: The bilateral history already provides the tamper-proof record. Check-in is just a semantic layer on top of it.</p>
+  </div>
+
+</div>
+</div>
+
+</div>
