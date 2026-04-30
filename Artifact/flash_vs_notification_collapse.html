@@ -1,0 +1,234 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:4px 0;font-family:var(--font-sans)}
+.card{background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:10px}
+.cl{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-tertiary);margin:0 0 14px}
+.rule{font-size:12px;color:var(--color-text-secondary);border-left:2px solid var(--color-border-secondary);padding-left:10px;margin:14px 0 0;line-height:1.6}
+.divider{border:none;border-top:.5px solid var(--color-border-tertiary);margin:4px 0 12px}
+
+.compare-full{display:flex;flex-direction:column;gap:1px;border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:4px}
+.cf-header{display:grid;grid-template-columns:1.2fr 1fr 1fr;background:var(--color-background-secondary)}
+.cf-row{display:grid;grid-template-columns:1.2fr 1fr 1fr;border-top:.5px solid var(--color-border-tertiary)}
+.cf-cell{padding:8px 10px;font-size:11px;color:var(--color-text-secondary);line-height:1.5}
+.cf-head{padding:7px 10px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-tertiary)}
+.cf-key{font-weight:500;color:var(--color-text-primary);background:var(--color-background-secondary)}
+.cf-notif{background:var(--color-background-primary)}
+.cf-flash{background:#FAEEDA22}
+.cf-flash-text{color:#633806;font-weight:500}
+.cf-danger{background:#FCEBEB22}
+.cf-danger-text{color:#A32D2D}
+
+.collapse-scenario{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:11px 14px;margin-bottom:8px;border-left:3px solid #E24B4A}
+.cs-title{font-size:12px;font-weight:500;color:var(--color-text-primary);margin:0 0 4px;display:flex;align-items:center;gap:7px}
+.cs-body{font-size:11px;color:var(--color-text-secondary);margin:0 0 5px;line-height:1.5}
+.cs-fix{font-size:11px;color:#085041;margin:0;font-weight:500}
+.danger-dot{width:7px;height:7px;border-radius:50%;background:#E24B4A;flex-shrink:0}
+
+.defense-block{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:11px 14px;margin-bottom:8px;border-left:3px solid #1D9E75}
+.db-title{font-size:12px;font-weight:500;color:var(--color-text-primary);margin:0 0 4px}
+.db-body{font-size:11px;color:var(--color-text-secondary);margin:0;line-height:1.5}
+
+.os-row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.os-block{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:9px 12px;flex:1;min-width:140px}
+.os-name{font-size:11px;font-weight:500;color:var(--color-text-primary);margin:0 0 4px}
+.os-risk{font-size:11px;color:var(--color-text-secondary);margin:0 0 4px;line-height:1.4}
+.os-fix{font-size:10px;font-weight:500;color:#085041;margin:0}
+.risk-pill{font-size:9px;font-weight:500;padding:1px 6px;border-radius:99px;margin-left:6px}
+.rp-high{background:#FCEBEB;color:#A32D2D}
+.rp-med{background:#FAEEDA;color:#633806}
+.rp-low{background:#E1F5EE;color:#085041}
+
+.moment-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.moment-block{border-radius:var(--border-radius-md);padding:10px 12px}
+.mb-notif{background:#F1EFE8;border:.5px solid var(--color-border-tertiary)}
+.mb-flash{background:#FAEEDA;border:.5px solid rgba(186,117,23,.3)}
+.mb-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin:0 0 6px}
+.mb-notif .mb-label{color:var(--color-text-tertiary)}
+.mb-flash .mb-label{color:#633806}
+.mb-item{font-size:11px;margin-bottom:3px;color:var(--color-text-secondary);line-height:1.4}
+.mb-item:last-child{margin-bottom:0}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Flash vs notification collapse risk — where users conflate them, why it matters, and how to defend against it</h2>
+
+<div class="card">
+<p class="cl">the fundamental difference — what makes Flash structurally unlike a notification</p>
+<div class="compare-full">
+  <div class="cf-header">
+    <div class="cf-head">dimension</div>
+    <div class="cf-head">notification</div>
+    <div class="cf-head">flash</div>
+  </div>
+  <div class="cf-row">
+    <div class="cf-cell cf-key">Origin</div>
+    <div class="cf-cell cf-notif">System or app — no pre-agreed meaning</div>
+    <div class="cf-cell cf-flash"><span class="cf-flash-text">A specific person — pre-agreed meaning</span></div>
+  </div>
+  <div class="cf-row">
+    <div class="cf-cell cf-key">Content</div>
+    <div class="cf-cell cf-notif">Carries text, data, or media</div>
+    <div class="cf-cell cf-flash"><span class="cf-flash-text">Carries zero content — meaning lives in the relationship</span></div>
+  </div>
+  <div class="cf-row">
+    <div class="cf-cell cf-key">Reply obligation</div>
+    <div class="cf-cell cf-notif">None — you can ignore indefinitely</div>
+    <div class="cf-cell cf-flash"><span class="cf-flash-text">Binary — ⚡ or ❌. Session stays open until resolved.</span></div>
+  </div>
+  <div class="cf-row">
+    <div class="cf-cell cf-key">Lifecycle</div>
+    <div class="cf-cell cf-notif">Arrives, sits in tray, dismissed or forgotten</div>
+    <div class="cf-cell cf-flash"><span class="cf-flash-text">8s ring → ambient Orb → escalation → sealed session</span></div>
+  </div>
+  <div class="cf-row">
+    <div class="cf-cell cf-key">Record</div>
+    <div class="cf-cell cf-notif">No bilateral history</div>
+    <div class="cf-cell cf-flash"><span class="cf-flash-text">Immutable record both sides — timestamps to the second</span></div>
+  </div>
+  <div class="cf-row">
+    <div class="cf-cell cf-key">Escalation</div>
+    <div class="cf-cell cf-notif">None — same state forever</div>
+    <div class="cf-cell cf-flash"><span class="cf-flash-text">Color deepens, haptic intensifies, DND override possible</span></div>
+  </div>
+  <div class="cf-row">
+    <div class="cf-cell cf-key">Consent</div>
+    <div class="cf-cell cf-notif">One-sided — app asks OS permission</div>
+    <div class="cf-cell cf-flash"><span class="cf-flash-text">Mutual — both parties configure the relationship</span></div>
+  </div>
+  <div class="cf-row">
+    <div class="cf-cell cf-key">Relationship</div>
+    <div class="cf-cell cf-notif">App to user — no human on the other end</div>
+    <div class="cf-cell cf-flash"><span class="cf-flash-text">Human to human — the relationship is the protocol</span></div>
+  </div>
+</div>
+<p class="rule">A notification is a system speaking to a user. A Flash is a person speaking to a person through a protocol. The OS has no category for the second thing — which is exactly where the collapse risk lives.</p>
+</div>
+
+<hr class="divider">
+
+<div class="card">
+<p class="cl">where the collapse happens — six specific scenarios</p>
+
+<div class="collapse-scenario">
+  <p class="cs-title"><span class="danger-dot"></span>Scenario 1 — The notification tray burial</p>
+  <p class="cs-body">Flash sends a push notification to wake the device. On iOS and Android, that push notification lands in the notification tray alongside 47 other alerts from WhatsApp, Gmail, and Instagram. The receiver swipes it away without looking. Flash's ambient Orb never gets a chance to establish itself because the entry point — the push — was treated like all the other noise.</p>
+  <p class="cs-fix">→ Fix: The 8-second full-screen takeover must bypass the tray entirely and present as a call screen, not a notification. This requires "full-screen intent" on Android and the call notification category on iOS — both of which are reserved for actual calls. Flash must register as a calling app to get this OS-level treatment.</p>
+</div>
+
+<div class="collapse-scenario">
+  <p class="cs-title"><span class="danger-dot"></span>Scenario 2 — DND collapse</p>
+  <p class="cs-body">The receiver has Do Not Disturb enabled. iOS and Android let DND through for calls and designated contacts but block all other notifications. If Flash is categorised as a notification app, DND blocks it by default. The receiver never sees the flash. The sender escalates to flash 4 thinking they're being ignored, when the signal never arrived.</p>
+  <p class="cs-fix">→ Fix: Flash must register as a communication app — specifically in the same category as phone calls — so that iOS Communication Notifications and Android notification channels treat it with call-level priority. This is a Day 1 engineering requirement, not a nice-to-have.</p>
+</div>
+
+<div class="collapse-scenario">
+  <p class="cs-title"><span class="danger-dot"></span>Scenario 3 — The mental model collapse at first contact</p>
+  <p class="cs-body">The very first flash a new user receives arrives before they understand what Flash is. Their mental model defaults to the most familiar category: notification. They read the name and meaning, process it as a message, and tap ⚡ the same way they'd dismiss an alert. They got it right — but for the wrong reason. They haven't understood that this is a protocol with a lifecycle, not a message with a read receipt. When flash 2 arrives they feel spammed.</p>
+  <p class="cs-fix">→ Fix: The first flash a user ever receives must include a one-time contextual overlay that explains the difference in one line: "This is a Flash — not a message. [Sender name] is waiting for your signal." The binary soldiers then feel like a decision, not a dismiss button.</p>
+</div>
+
+<div class="collapse-scenario">
+  <p class="cs-title"><span class="danger-dot"></span>Scenario 4 — The ambient Orb ignored as a widget</p>
+  <p class="cs-body">After the 8-second ring, the Orb settles on screen. But users are trained by years of OS behaviour to ignore persistent UI elements — widgets, always-on display content, lock screen items. The Orb glows amber but the user's brain has already categorised it as "background widget, not urgent." The session sits open, the sender re-flashes, and the receiver is genuinely confused why they're getting multiple alerts for something they thought they already saw.</p>
+  <p class="cs-fix">→ Fix: The Orb must be visually distinct from every native OS widget pattern. It should not sit in a widget grid or notification shade. It should occupy a specific screen position that no OS element uses — center lock screen, or a floating element that slightly overlaps the home screen without being dismissable by a standard swipe.</p>
+</div>
+
+<div class="collapse-scenario">
+  <p class="cs-title"><span class="danger-dot"></span>Scenario 5 — OS Settings collapse</p>
+  <p class="cs-body">In iOS Settings → Notifications → Flash, the user sees the same toggles they see for every app: Allow Notifications, Sounds, Badges. They turn off sounds because they find Flash noisy. Now the 8-second ring arrives silently and they miss it. They then complain that Flash "doesn't work" when in reality they've broken the protocol through a settings screen that doesn't understand what Flash is.</p>
+  <p class="cs-fix">→ Fix: Flash needs an in-app notification settings screen that takes precedence over OS defaults where legally possible. More importantly, Flash should educate users at onboarding that turning off sounds breaks the protocol — with clear language: "Flash uses sound to signal urgency. Turning this off means your contacts may not reach you."</p>
+</div>
+
+<div class="collapse-scenario">
+  <p class="cs-title"><span class="danger-dot"></span>Scenario 6 — The battery saver / low power mode collapse</p>
+  <p class="cs-body">On Android especially, aggressive battery optimisation kills background processes. Flash's WebSocket connection is severed, the incoming flash is delayed by minutes or never arrives. The receiver sees nothing. The sender's escalation model is based on time-sensitive reply windows. A 10-minute delay in delivery means the session may have already expired or escalated before the receiver even knew it existed.</p>
+  <p class="cs-fix">→ Fix: Flash must use FCM high-priority messages on Android and APNs priority 10 on iOS — the highest push delivery priority available. Additionally, Flash's onboarding must walk users through disabling battery optimisation for the app specifically, with screenshots per device manufacturer.</p>
+</div>
+</div>
+
+<hr class="divider">
+
+<div class="card">
+<p class="cl">os-level collapse risk by platform</p>
+<div class="os-row">
+  <div class="os-block">
+    <p class="os-name">iOS <span class="risk-pill rp-med">medium risk</span></p>
+    <p class="os-risk">iOS Communication Notifications category gives call-level priority but requires Apple approval. Focus modes can block Flash if not configured. Dynamic Island is powerful but requires specific entitlements.</p>
+    <p class="os-fix">→ Register as communication app. Apply for CallKit integration. Educate users on Focus mode configuration.</p>
+  </div>
+  <div class="os-block">
+    <p class="os-name">Android <span class="risk-pill rp-high">high risk</span></p>
+    <p class="os-risk">Notification channels, battery optimisation, manufacturer-level restrictions (Xiaomi, Huawei, Samsung) all create unpredictable delivery. Android fragmentation means 12 different battery optimisation screens.</p>
+    <p class="os-fix">→ FCM high-priority. Full-screen intent for call screen. Per-manufacturer onboarding screens. This is the hardest engineering problem in the product.</p>
+  </div>
+  <div class="os-block">
+    <p class="os-name">Web MVP <span class="risk-pill rp-high">high risk</span></p>
+    <p class="os-risk">Browser notifications are the weakest delivery channel. Safari blocks them by default on iOS. Service workers can be killed. No full-screen intent possible. The web MVP is inherently limited to notification-tier delivery.</p>
+    <p class="os-fix">→ Be explicit that web MVP is a demo layer. Aggressively funnel web users to native app download from first interaction.</p>
+  </div>
+</div>
+</div>
+
+<hr class="divider">
+
+<div class="card">
+<p class="cl">the five defenses — how Flash protects its identity against collapse</p>
+
+<div class="defense-block">
+  <p class="db-title">Defense 1 — Register as a calling app, not a notification app</p>
+  <p class="db-body">On both iOS (CallKit) and Android (ConnectionService), Flash should register as a communication app that makes and receives calls. This gets call-screen priority on the lock screen, bypasses DND by default, and signals to the OS — and therefore to the user — that Flash is in the same category as a phone call, not an email. This is the single most important architectural decision for preventing collapse.</p>
+</div>
+
+<div class="defense-block">
+  <p class="db-title">Defense 2 — The full-screen takeover must feel categorically different from any notification</p>
+  <p class="db-body">The 8-second ring screen must be visually unlike any notification banner, alert, or OS popup the user has ever seen. Dark background, full-screen glow, large Orb, biological rhythm. If it looks like a WhatsApp notification with a different color scheme, the mental categorisation will collapse immediately. The design has to communicate "this is a different kind of thing" within 200 milliseconds of appearing.</p>
+</div>
+
+<div class="defense-block">
+  <p class="db-title">Defense 3 — The Orb must be unkillable by standard dismiss gestures</p>
+  <p class="db-body">Users dismiss notifications by swiping left. They dismiss widgets by long-pressing. The Orb should not respond to either of these gestures. It can only be resolved by ⚡ or ❌. Attempting to swipe it away should produce a subtle resistance — the Orb shifts slightly but returns. This teaches the user through physical interaction that this element operates under different rules.</p>
+</div>
+
+<div class="defense-block">
+  <p class="db-title">Defense 4 — Language discipline throughout the product</p>
+  <p class="db-body">Never use the word "notification" anywhere in the Flash UI, onboarding, or marketing. Not once. Flash uses "flash," "signal," "session," and "relationship." The moment you say "you have a notification from Bello" you've lost the battle. The vocabulary is part of the mental model. If Flash speaks like a notification app it will be categorised as one.</p>
+</div>
+
+<div class="defense-block">
+  <p class="db-title">Defense 5 — The bilateral record is the proof of difference</p>
+  <p class="db-body">The single most powerful demonstration that Flash is not a notification is the history screen. Show new users their bilateral session record early. "Here is every flash between you and Bello. Here is exactly when each one was sent, when it was received, and what happened." No notification app has ever shown a user this. The moment a user sees that record they understand they are inside a protocol, not a push system.</p>
+</div>
+
+</div>
+
+<hr class="divider">
+
+<div class="card">
+<p class="cl">what a flash moment is vs what a notification moment is</p>
+<div class="moment-row">
+  <div class="moment-block mb-notif">
+    <p class="mb-label">notification moment</p>
+    <p class="mb-item">App wants something from you</p>
+    <p class="mb-item">No one is waiting</p>
+    <p class="mb-item">Swipe to dismiss is acceptable</p>
+    <p class="mb-item">Content is in the banner</p>
+    <p class="mb-item">Ignoring has no consequence</p>
+    <p class="mb-item">The system sent it</p>
+    <p class="mb-item">Forgotten in minutes</p>
+  </div>
+  <div class="moment-block mb-flash">
+    <p class="mb-label">flash moment</p>
+    <p class="mb-item">A specific person needs something from you</p>
+    <p class="mb-item">Someone is waiting for your signal</p>
+    <p class="mb-item">Swipe does nothing — session stays open</p>
+    <p class="mb-item">Meaning lives in the relationship, not the banner</p>
+    <p class="mb-item">Ignoring escalates the session</p>
+    <p class="mb-item">A person sent it</p>
+    <p class="mb-item">Recorded permanently in bilateral history</p>
+  </div>
+</div>
+<p class="rule">The collapse happens when any item in the left column bleeds into the Flash experience. Every defense above is aimed at keeping those two columns permanently separate in the user's mind.</p>
+</div>
+
+</div>
